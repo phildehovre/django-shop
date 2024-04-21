@@ -1,0 +1,25 @@
+
+.product_list_ctn {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0 auto;
+}
+
+.product_card {
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+
+    img {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+}

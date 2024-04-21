@@ -1,0 +1,16 @@
+h1 {
+    color: blue;
+}
+
+.product_list_ctn {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+}
+
+.product_card {
+
+    img {
+        height: 100px;
+    }
+}

@@ -1,0 +1,6 @@
+{% extends 'shop/base.html' %} {% block products %} {% if product %}
+<div class="product_detail_ctn">
+  <h2>{{ product.name }}</h2>
+  <p>{{ product.description }}</p>
+</div>
+{% endif %} {% endblock products %}

@@ -51,6 +51,14 @@
             >Logout</a
           >
         </li>
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.path == 'basket' %}active{% endif %}"
+            aria-current="page"
+            href="{% url 'basket' %}"
+            >View basket</a
+          >
+        </li>
         {% else %}
         <li class="nav-item">
           <a

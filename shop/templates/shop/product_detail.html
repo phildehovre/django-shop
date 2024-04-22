@@ -2,5 +2,17 @@
 <div class="product_detail_ctn">
   <h2>{{ product.name }}</h2>
   <p>{{ product.description }}</p>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
+    <input type="submit" name="add_to_basket" value="Add to basket" />
+  </form>
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+  </ul>
+{% endif %}
 </div>
 {% endif %} {% endblock products %}

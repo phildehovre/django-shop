@@ -1,0 +1,16 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+    <h1>Basket</h1>  
+    {% for product in products %}
+    <a href="{% url 'product_detail' product.id %}">
+        <article class="product_card">
+          <img
+            src="https://res.cloudinary.com/dtnif6mzm/image/upload/v1654512079/cld-sample-3.jpg"
+            alt="{{ product.name }}"
+          />
+          <h2>{{ product.name }}</h2>
+        </article>
+      </a>
+    {% endfor %}
+{% endblock content %}

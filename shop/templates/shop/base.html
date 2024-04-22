@@ -1,8 +1,10 @@
 {% extends "base/base.html" %}
 {% block content %}
-{% include 'shop/sidebar.html' %}
-<h1>Shopfront</h1>
-{% block products %}
-{% comment %} product list {% endcomment %}
-{% endblock products %}
+<div class="shop_ctn">
+    {% include 'shop/sidebar.html' %}
+    <h1>Shopfront</h1>
+    {% block products %}
+    {% comment %} product list {% endcomment %}
+    {% endblock products %}
+</div>
 {% endblock content %}

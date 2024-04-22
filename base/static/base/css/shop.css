@@ -13,6 +13,7 @@
     width: 350px;
     display: flex;
     flex-direction: column;
+    padding: .5em;
 
     img {
         height: 250px;
@@ -22,4 +23,30 @@
     h2 {
         font-size: 1rem;
     }
+}
+
+.messages > li {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 6px;
+    list-style: none;
+}
+
+.messages .error {
+    margin: .5em;
+    background-color: rgba(240, 128, 128, 0.459);
+    border: 1px solid rgb(255, 69, 69);
+    color: rgb(136, 31, 31);
+    width: 100%;
+    padding: .5em;
+}
+
+.messages .success {
+    margin: .5em;
+    padding: .5em;
+    background-color: rgba(144, 238, 144, 0.418);
+    border: 1px solid rgb(51, 196, 51);
+    color: rgb(27, 114, 27);
+    width: 100%;
 }

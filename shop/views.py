@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Order
+from .models import Product, Order, ProductTag
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .helpers import calculations
@@ -8,9 +8,19 @@ def shop_view(request):
     """
     This view handles the shop page.
     """
+    filter = request.GET.get("tag") if request.GET.get("category") != None else ''
     product_list = Product.objects.all()
+    product_tags = ProductTag.objects.all()
 
-    return render(request, 'shop/product_list.html', {"products": product_list})
+    print(filter)
+
+    return render(
+            request, 
+            'shop/product_list.html', 
+            {
+                "products": product_list, 
+                "tags": product_tags,
+            })
 
 @login_required
 def add_to_basket(request, product):

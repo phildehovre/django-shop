@@ -3,10 +3,13 @@
 
 {% block content %}
 <div class="shop_ctn">
-    {% include 'shop/sidebar.html' %}
-    <h1>Shopfront</h1>
-    {% block products %}
-    {% comment %} product list {% endcomment %}
-    {% endblock products %}
+    <div class="sidebar_layout">
+        {% include 'shop/sidebar.html' %}
+    </div>
+    <div class="products_layout">
+        {% block products %}
+        <!-- Product list -->
+        {% endblock products %}
+    </div>
 </div>
 {% endblock content %}

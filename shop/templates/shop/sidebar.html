@@ -1,3 +1,35 @@
 {% block content %}
 <h1>Sidebar</h1>
+
+<ul class="sidebar_ctn">
+    <form method="post">
+        {% csrf_token %}
+        {% for tag in tags %}
+        <li>
+                <input class="filter-checkbox" type="checkbox" name="tag" value="{{ tag.id }}">
+            {{ tag.name }}
+        </li>
+        {% endfor %}
+    </form>
+</ul>
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const params = new URLSearchParams(window.location.search);
+            if (this.checked) {
+                params.append('tag', this.value);
+            } else {
+                params.delete('tag');
+            }
+            const newUrl = `${window.location.pathname}?${params.toString()}`;
+            history.pushState({}, '', newUrl);
+        });
+    });
+});
+</script>
+{% endblock scripts %}
 {% endblock content %}

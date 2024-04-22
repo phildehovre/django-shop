@@ -1,3 +1,10 @@
+.shop_ctn {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
 
 .product_list_ctn {
     display: flex;
@@ -49,4 +56,14 @@
     border: 1px solid rgb(51, 196, 51);
     color: rgb(27, 114, 27);
     width: 100%;
+}
+
+
+.sidebar_ctn {
+    list-style: none;
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
 }

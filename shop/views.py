@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Order
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .helpers import calculations
 
 def shop_view(request):
     """
@@ -90,5 +91,11 @@ def basket_view(request):
 
     basket = Order.objects.filter(user=request.user)
 
-    return render(request, 'shop/basket.html', {"basket": basket})
+    return render(
+         request, 
+         'shop/basket.html', 
+        {
+            "basket": basket, 
+            "total": calculations.calculate_total(basket)
+        })
 

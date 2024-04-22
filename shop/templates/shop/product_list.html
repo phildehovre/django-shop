@@ -2,15 +2,16 @@
 {% block products %}
 <div class="product_list_ctn">
   {% for product in products %}
-  <a href="{% url 'product_detail' product.id %}">
-    <article class="product_card">
+  <article class="product_card">
       <img
-        src="https://res.cloudinary.com/dtnif6mzm/image/upload/v1654512079/cld-sample-3.jpg"
-        alt="{{ product.name }}"
+      src="https://res.cloudinary.com/dtnif6mzm/image/upload/v1654512079/cld-sample-3.jpg"
+      alt="{{ product.name }}"
       />
+    <a href="{% url 'product_detail' product.id %}">
       <h2>{{ product.name }}</h2>
+    </a>
+      <small>£{{ product.price|floatformat:2 }}</small>
     </article>
-  </a>
   {% endfor %}
 </div>
 {% endblock products %}

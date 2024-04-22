@@ -1,25 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Basket, Order
+from .models import Product, Order
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
-
 def shop_view(request):
-
+    """
+    This view handles the shop page.
+    """
     product_list = Product.objects.all()
 
     return render(request, 'shop/product_list.html', {"products": product_list})
-
-@login_required
-def select_or_create_basket(request):
-    basket = Basket.objects.filter(user=request.user)
-    if basket.exists():
-        return basket.first()
-    else:
-        basket = Basket.objects.create(user=request.user)
-        basket.save()
-        return basket
 
 @login_required
 def add_to_basket(request, product):
@@ -48,6 +38,9 @@ def update_basket(request):
     input_quantity = int(request.POST.get("quantity"))
     order = Order.objects.get(id=order_id)
     product = order.product
+
+    # Check if quantity is the same as order quantity
+    # if so, return to basket
     validated_quantity = input_quantity
 
     if (order.quantity == input_quantity):
@@ -59,7 +52,7 @@ def update_basket(request):
             return redirect("basket")
         
         # Check if quantity is greater than order quantity, 
-        # update as necessary
+        # updates as necessary
     if input_quantity > order.quantity:
             validated_quantity = input_quantity - order.quantity
             messages.success(request, f"{product.name} {validated_quantity} added to basket")
@@ -83,7 +76,12 @@ def remove_from_basket(request):
     return redirect("basket")
 
 def basket_view(request):
-
+    """
+    This view handles the basket page. 
+    It allows users to view the items in their basket,
+    update the quantity of items in their basket,
+    and remove items from their basket.
+    """
     if request.method == "POST":
         if request.POST.get("action") == "delete":
             remove_from_basket(request)

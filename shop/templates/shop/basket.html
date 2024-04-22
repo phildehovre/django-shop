@@ -1,16 +1,39 @@
 {% extends "shop/base.html" %}
 
 {% block content %}
-    <h1>Basket</h1>  
-    {% for product in products %}
-    <a href="{% url 'product_detail' product.id %}">
-        <article class="product_card">
+    <h1>Basket</h1> 
+    {% if messages %}
+    <ul class="messages">
+
+      {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+      {% endif %}
+    {% if basket|length == 0 %}
+        <p>Your basket is empty</p>
+        <a href="/shop">Start shopping</a>
+    {% endif %}
+    {% for order in basket %}
+    <article class="product_card">
+          <a href="{% url 'product_detail' order.product.id %}">
           <img
             src="https://res.cloudinary.com/dtnif6mzm/image/upload/v1654512079/cld-sample-3.jpg"
-            alt="{{ product.name }}"
+            alt="{{ order.product.name }}"
           />
-          <h2>{{ product.name }}</h2>
-        </article>
-      </a>
+          <h2>{{ order.product.name }}</h2>
+        </a>
+    </article>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order.id }}" />
+        <input type="number" name="quantity" value="{{ order.quantity }}" />
+      </form>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete"/>
+        <input type="hidden" name="order_id" value="{{ order.id }}" />
+        <button type="submit">Remove item(s)</button>
+      </form>
     {% endfor %}
 {% endblock content %}

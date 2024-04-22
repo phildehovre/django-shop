@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Basket
+from .models import Product, Basket, Order
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -27,12 +27,10 @@ def add_to_basket(request, product):
     if quantity > product.stock:
         messages.error(request, "Not enough stock")
     else:
-        basket = select_or_create_basket(request)
-        basket.products.add(product)
-        
+        order = Order.objects.create(user=request.user, product=product, quantity=quantity)
         product.stock -= quantity
         product.save()
-        basket.save()
+        order.save()
         messages.success(request, f"{product.name} ({quantity}) added to basket")
 
 def product_detail(request, product_id):    
@@ -44,7 +42,55 @@ def product_detail(request, product_id):
          
     return render(request, 'shop/product_detail.html', {"product": product})
 
+@login_required
+def update_basket(request):
+    order_id = request.POST.get("order_id")
+    input_quantity = int(request.POST.get("quantity"))
+    order = Order.objects.get(id=order_id)
+    product = order.product
+    validated_quantity = input_quantity
+
+    if (order.quantity == input_quantity):
+            return redirect("basket")
+
+        # Check stock
+    if input_quantity > product.stock:
+            messages.error(request, f"Not enough stock, {product.stock} left")
+            return redirect("basket")
+        
+        # Check if quantity is greater than order quantity, 
+        # update as necessary
+    if input_quantity > order.quantity:
+            validated_quantity = input_quantity - order.quantity
+            messages.success(request, f"{product.name} {validated_quantity} added to basket")
+    if input_quantity < order.quantity:
+            validated_quantity = order.quantity - validated_quantity
+            messages.success(request, f"{product.name} {validated_quantity } removed from basket")
+        
+    product.stock += validated_quantity
+    order.quantity = validated_quantity
+    product.save()
+    order.save()
+
+def remove_from_basket(request):
+    order_id = request.POST.get("order_id")
+    order = Order.objects.get(id=order_id)
+    product = order.product
+    product.stock += order.quantity
+    product.save()
+    order.delete()
+    messages.success(request, f"{product.name} removed from basket")
+    return redirect("basket")
+
 def basket_view(request):
-    basket = select_or_create_basket(request)
-    products = basket.products.all()
-    return render(request, 'shop/basket.html', {"basket": basket, "products": products})
+
+    if request.method == "POST":
+        if request.POST.get("action") == "delete":
+            remove_from_basket(request)
+        else:
+            update_basket(request)
+
+    basket = Order.objects.filter(user=request.user)
+
+    return render(request, 'shop/basket.html', {"basket": basket})
+

@@ -11,6 +11,13 @@ RATING = (
     (4, "Good"),
     (5, "Excellent"),
 )
+ORDER_STATUS = (
+    (0, "INERT"),
+    (1, "PENDING"),
+    (2, "PROCESSING"),
+    (3, "SHIPPED"),
+    (4, "COMPLETED"),
+)
 
 class ProductTag(models.Model):
     name = models.CharField(max_length=50)
@@ -45,11 +52,11 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    total_price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=ORDER_STATUS, default=0) 
 
     def __str__(self):
-        return f"{self.user.username} - {self.product.name}"
+        return f"{self.user.username} -({self.quantity}) {self.product.name}"
     
 class Basket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

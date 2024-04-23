@@ -1,0 +1,9 @@
+.hamburger_trigger {
+    border: 1px solid rgb(155, 163, 197);
+    height: 40px;
+    width:40px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

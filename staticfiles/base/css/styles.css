@@ -1,8 +1,10 @@
-body {
-    margin: 0 auto;
-    outline: 1px solid red;
-}
+.hamburger_trigger {
+    border: 1px solid red;
+    height: 40px;
+    width:40px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-h1 {
-    color: lavender;
 }

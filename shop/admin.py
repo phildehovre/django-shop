@@ -9,3 +9,4 @@ admin.site.register(Review)
 admin.site.register(ProductTag)
 admin.site.register(Basket)
 admin.site.register(Order)
+

@@ -2,7 +2,7 @@
 <h1>Sidebar</h1>
 
 <ul class="sidebar_ctn">
-    <form method="post" class="filter-form"  >
+    <form method="post" class="filter-form" >
         {% csrf_token %}
         {% for tag in tags %}
         <li>
@@ -48,12 +48,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
+            // use of this keyword for brevity and legibility;
             const tag = this.value;
             const tags = getTagsFromCookies();
+            // If checked, add to tags
             if (this.checked) {
                 tags.push(tag);
             } else {
                 const index = tags.indexOf(tag);
+                //Else when uncheck, if tag exists, remove it from tags;
                 if (index !== -1) {
                     tags.splice(index, 1);
                 }

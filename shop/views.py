@@ -12,7 +12,7 @@ def shop_view(request, selected_tags=None):
     product_list = Product.objects.all()
     product_tags = ProductTag.objects.all()
 
-    print(selected_tags)
+    print(request)
 
     if request.method == "POST":
         selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") != None else ['all']

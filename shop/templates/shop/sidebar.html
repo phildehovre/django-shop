@@ -2,11 +2,11 @@
 <h1>Sidebar</h1>
 
 <ul class="sidebar_ctn">
-    <form method="post">
+    <form method="post" class="filter-form"  >
         {% csrf_token %}
         {% for tag in tags %}
         <li>
-                <input class="filter-checkbox" type="checkbox" name="tag" value="{{ tag.id }}">
+                <input class="filter-checkbox" type="checkbox" {% if tag in selected_tags %} checked {% endif %} name="tag" value="{{ tag.id }}">
             {{ tag.name }}
         </li>
         {% endfor %}
@@ -16,17 +16,52 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const checkboxes = document.querySelectorAll('.filter-checkbox');
+    const form = document.querySelectorAll(".filter-form");
+
+    // Function to update cookies
+    const updateCookies = (tags) => {
+        document.cookie = `tags=${encodeURIComponent(JSON.stringify(tags))}; path=/`;
+    };
+
+    // Function to get tags from cookies
+    const getTagsFromCookies = () => {
+        const cookies = document.cookie.split(';');
+        for (const cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'tags') {
+                return JSON.parse(decodeURIComponent(value));
+            }
+        }
+        return [];
+    };
+
+    // Function to update checkbox checked status based on cookies
+    const updateCheckboxStatus = () => {
+        const tags = getTagsFromCookies();
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = tags.includes(checkbox.value);
+        });
+    };
+
+    // Call updateCheckboxStatus on page load
+    updateCheckboxStatus();
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            const params = new URLSearchParams(window.location.search);
+            const tag = this.value;
+            const tags = getTagsFromCookies();
             if (this.checked) {
-                params.append('tag', this.value);
+                tags.push(tag);
             } else {
-                params.delete('tag');
+                const index = tags.indexOf(tag);
+                if (index !== -1) {
+                    tags.splice(index, 1);
+                }
             }
-            const newUrl = `${window.location.pathname}?${params.toString()}`;
+            updateCookies(tags);
+            const newUrl = `${window.location.pathname}?tag=${tags.join(',')}`;
             history.pushState({}, '', newUrl);
+            form.forEach(form => form.submit());
         });
     });
 });

@@ -4,15 +4,23 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .helpers import calculations
 
-def shop_view(request):
+
+def shop_view(request, selected_tags=None):
     """
     This view handles the shop page.
     """
-    filter = request.GET.get("tag") if request.GET.get("category") != None else ''
     product_list = Product.objects.all()
     product_tags = ProductTag.objects.all()
 
-    print(filter)
+    print(selected_tags)
+
+    if request.method == "POST":
+        selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") != None else ['all']
+        product_list = Product.objects.filter(tags__id__in=selected_tags)
+        if len(selected_tags) == 0:
+            product_list = Product.objects.all()
+             
+
 
     return render(
             request, 
@@ -20,7 +28,9 @@ def shop_view(request):
             {
                 "products": product_list, 
                 "tags": product_tags,
+                "selected_tags": selected_tags
             })
+
 
 @login_required
 def add_to_basket(request, product):

@@ -4,7 +4,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.http import HttpResponse
-from .forms import UpdateUserForm, UpdateProfileForm
 from django.db.models import Q
 
 # Create your views here.
@@ -16,13 +15,6 @@ def home_view(request):
 def about_view(request):
     print("rendering about: ", request)
     return render(request, 'base/about.html')
-
-def account_view(request):
-    #https://dev.to/earthcomfy/django-user-profile-3hik
-    profile_form = UpdateProfileForm(request.POST, instance=request.user)
-    user_form = UpdateUserForm(request.POST,request.FILES, instance=request.user.profile)
-
-    return render(request, 'base/account.html', {"profile_form": profile_form, "user_form": user_form})
 
 def login_view(request):
     page = 'login'

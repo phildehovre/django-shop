@@ -72,8 +72,12 @@
         {% endif %}
       </ul>
       {% if request.user.is_authenticated %}
-        <a class="hamburger_trigger" href="/account">
+        <a class="hamburger_trigger" href="{% url 'profile' %}">
+          {% if request.user.profile.avatar %}
+          <img src="/{{ request.user.profile.avatar }}" alt="user avatar"/>
+          {% else %}
           <i class="fa-solid fa-user" size="4xl"></i>
+          {% endif %}
         </a>
       {% endif %}
     </div>

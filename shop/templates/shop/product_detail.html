@@ -11,8 +11,8 @@
   <ul class="messages">
       {% for message in messages %}
           <li class="{{ message.tags }}">{{ message }}
-            <a href="/shop">Continue shopping</a>
-            <a href="/basket">View basket</a>
+            <a href="{% url 'shop' %}">Continue shopping</a>
+            <a href="{% url 'basket' %}">View basket</a>
           </li>
       {% endfor %}
   </ul>

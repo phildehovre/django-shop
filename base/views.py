@@ -19,6 +19,7 @@ def about_view(request):
     return render(request, 'base/about.html')
 
 def account_view(request):
+    page = 'account'
     queryset = Profile.objects.filter(user=request.user)
     profile = queryset.first()
 
@@ -34,14 +35,15 @@ def account_view(request):
         except Exception as e:
             messages.error(request, f"There was an error: {str(e)}")
 
-    return render(request, 'base/account.html', {'profile': profile, 'profile_form': profile_form})
+    return render(request, 'base/account.html', {'page': page, 'profile': profile, 'profile_form': profile_form})
 
 def profile_view(request):
+    page = 'profile'
     queryset = Profile.objects.filter(user=request.user)
     profile = queryset.first()
     print(profile.bio)
 
-    return render(request, 'base/profile.html', {'profile': profile})
+    return render(request, 'base/account.html', {'page': page, 'profile': profile})
 
 def login_view(request):
     page = 'login'
@@ -51,16 +53,16 @@ def login_view(request):
 
         try:
             user = authenticate(request, username=username, password=password)
-            profile = Profile.objects.filter(user=request.user)
             if user is not None:
-                if profile is None:
-                    profile = Profile.objects.create(user=request.user)
-                    profile.save(commit=False)
                 login(request, user)
                 messages.success(request, 'Successully logged in!')
-                return redirect('shop/products')
+                # if profile is None:
+                #     profile = Profile.objects.create(user=request.user)
+                #     profile.save()
+                return redirect('shop')
         except:
             messages.error(request, 'Username or password incorrect')   
+            return redirect('home')
 
     return render(request, 'base/login_register.html', {'page': page})
 
@@ -74,23 +76,24 @@ def user_register(request):
     form = UserCreationForm()
 
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            # The commit=False argument passed to the save() method 
-            # indicates that the changes made to the user instance 
-            # should not be immediately saved to the database. 
-            # This allows additional modifications to be made 
-            # to the user instance before it's saved permanently.
-            user.username = user.username.lower()
-            user.save()
-            login(request, user)
-            # It is crucial to initiate profile creation
-            # AFTER the user was saved AND logged in.
-            profile = Profile.objects.create(user=user)
-            profile.save()
-            return redirect('shop/products')
-        else: 
-            messages.error(request,'An error occurred during registration, please try again')
+        try:
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                # The commit=False argument passed to the save() method 
+                # indicates that the changes made to the user instance 
+                # should not be immediately saved to the database. 
+                # This allows additional modifications to be made 
+                # to the user instance before it's saved permanently.
+                user.username = user.username.lower()
+                user.save()
+                login(request, user)
+                # It is crucial to initiate profile creation
+                # AFTER the user was saved AND logged in.
+                profile = Profile.objects.create(user=user)
+                profile.save()
+                return redirect('shop')
+        except Exception as e: 
+            messages.error(request,f'An error occurred during registration: {str(e)}')
         
     return render(request, "base/login_register.html", {'page': page, "form": form})

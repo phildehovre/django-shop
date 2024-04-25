@@ -1,12 +1,29 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <h1>Account: {{ user }}</h1>
-    
-    Profile username: {{ profile.user.username}}
+    {% if page == 'account' %}
+    <h2>Name:</h2>
+    <p>{{ user.username  }}</p>
     <form method="POST">
         {% csrf_token %}
         {{ profile_form.as_p }}
         <input type="submit" />
     </form>
+    {% endif %}
+    
+    {% if page == 'profile' %}
+    <h1>Your profile</h1>
+    <button>
+        <a href="{% url 'account' %}">Edit profile</a>
+    </button>
+    <div class="profile_row">
+        <h2>Name:</h2>
+        <p>{{ profile.user.username  }}</p>
+    </div>
+    <h2>About you:</h2>
+    <div class="profile_avatar_ctn">
+        <img class="profile_avatar" src="/{{ profile.avatar }}" />
+    </div>
+    <p>{{ profile.bio }}</p>
+    {% endif %}
 {% endblock content %}

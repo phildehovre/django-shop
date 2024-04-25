@@ -6,6 +6,13 @@
     padding: 1rem;
 }
 
+.products_layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin: 0 auto;
+}
+
 .product_list_ctn {
     display: flex;
     justify-content: center;
@@ -61,6 +68,8 @@
 
 .sidebar_ctn {
     list-style: none;
+    padding: 0;
+    margin: 0;
 
     a {
         text-decoration: none;

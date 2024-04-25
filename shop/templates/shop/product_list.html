@@ -4,7 +4,7 @@
   {% for product in products %}
   <article class="product_card">
       <img
-      src="https://res.cloudinary.com/dtnif6mzm/image/upload/v1654512079/cld-sample-3.jpg"
+      src="/{{ product.image }}"
       alt="{{ product.name }}"
       />
     <a href="{% url 'product_detail' product.id %}">

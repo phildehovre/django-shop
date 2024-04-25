@@ -6,7 +6,7 @@
     Profile username: {{ profile.user.username}}
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ profile_form.as_p }}
         <input type="submit" />
     </form>
 {% endblock content %}

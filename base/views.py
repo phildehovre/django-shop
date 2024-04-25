@@ -22,15 +22,26 @@ def account_view(request):
     queryset = Profile.objects.filter(user=request.user)
     profile = queryset.first()
 
-    form = UpdateProfileForm(instance=profile)
+    profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
 
-    return render(request, 'base/account.html', {'profile': profile, 'form': form})
+    if request.method == "POST":
+        try:
+            profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, 'Your profile was updated successfully.')
+                return redirect('profile')
+        except Exception as e:
+            messages.error(request, f"There was an error: {str(e)}")
+
+    return render(request, 'base/account.html', {'profile': profile, 'profile_form': profile_form})
 
 def profile_view(request):
     queryset = Profile.objects.filter(user=request.user)
     profile = queryset.first()
+    print(profile.bio)
 
-    return render(request, 'base/account.html', {'profile': profile})
+    return render(request, 'base/profile.html', {'profile': profile})
 
 def login_view(request):
     page = 'login'

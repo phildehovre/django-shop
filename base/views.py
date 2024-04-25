@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.db.models import Q
 from .models import Profile
+from .forms import UpdateProfileForm
 
 # Create your views here.
 
@@ -18,6 +19,14 @@ def about_view(request):
     return render(request, 'base/about.html')
 
 def account_view(request):
+    queryset = Profile.objects.filter(user=request.user)
+    profile = queryset.first()
+
+    form = UpdateProfileForm(instance=profile)
+
+    return render(request, 'base/account.html', {'profile': profile, 'form': form})
+
+def profile_view(request):
     queryset = Profile.objects.filter(user=request.user)
     profile = queryset.first()
 
@@ -35,7 +44,7 @@ def login_view(request):
             if user is not None:
                 if profile is None:
                     profile = Profile.objects.create(user=request.user)
-                    profile.save()
+                    profile.save(commit=False)
                 login(request, user)
                 messages.success(request, 'Successully logged in!')
                 return redirect('shop/products')
@@ -63,11 +72,13 @@ def user_register(request):
             # This allows additional modifications to be made 
             # to the user instance before it's saved permanently.
             user.username = user.username.lower()
-            profile = Profile.objects.create(user=user)
-            profile.save()
             user.save()
             login(request, user)
-            return redirect('home')
+            # It is crucial to initiate profile creation
+            # AFTER the user was saved AND logged in.
+            profile = Profile.objects.create(user=user)
+            profile.save()
+            return redirect('shop/products')
         else: 
             messages.error(request,'An error occurred during registration, please try again')
         

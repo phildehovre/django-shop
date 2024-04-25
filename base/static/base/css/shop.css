@@ -79,9 +79,19 @@
 
 .checkout_list {
     list-style: none;
-    
+
     .checkout_item {
         display: flex;
-        border-bottom: 1px solid grey
+        border-bottom: 1px solid grey;
+        justify-content: space-between;
+        gap: 1rem;
+
+        p {
+            width: 100%;
+        }
+
+        .name {
+            text-align: left;
+        }
     }
 }

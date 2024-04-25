@@ -57,6 +57,9 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user.username} -({self.quantity}) {self.product.name}"
+
+    def total(self):
+        return self.product.price * self.quantity
     
 class Basket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

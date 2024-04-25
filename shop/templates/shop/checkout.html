@@ -8,9 +8,9 @@
         <ul class="checkout_list">
             {% for order in basket %}
             <li class='checkout_item'>
-                <p>{{ order.quantity }}</p>
-                <p>{{ order.product.name }}</p>
-                <p>{{ order.product.price }}</p>
+                <p class="name">{{ order.product.name }}</p>
+                <p class="price">{{ order.product.price }} x {{ order.quantity }}</p>
+                <p><strong>{{ order.total }}</strong></p>
             </li>
             {% endfor %}
         </ul>

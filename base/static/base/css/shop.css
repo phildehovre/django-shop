@@ -76,3 +76,12 @@
         color: black;
     }
 }
+
+.checkout_list {
+    list-style: none;
+    
+    .checkout_item {
+        display: flex;
+        border-bottom: 1px solid grey
+    }
+}

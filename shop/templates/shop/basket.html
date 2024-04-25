@@ -38,5 +38,8 @@
       </form>
       {% endfor %}
       <p>Total: £{{ total|floatformat:2 }}</p>
+      <button>
+        <a href="{% url 'checkout' %}">checkout</a>    
+      </button>
     </div>
       {% endblock content %}

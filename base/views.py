@@ -4,8 +4,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.http import HttpResponse
-from .forms import UpdateUserForm, UpdateProfileForm
 from django.db.models import Q
+from .models import Profile
 
 # Create your views here.
 
@@ -18,11 +18,10 @@ def about_view(request):
     return render(request, 'base/about.html')
 
 def account_view(request):
-    #https://dev.to/earthcomfy/django-user-profile-3hik
-    profile_form = UpdateProfileForm(request.POST, instance=request.user)
-    user_form = UpdateUserForm(request.POST,request.FILES, instance=request.user.profile)
+    queryset = Profile.objects.filter(user=request.user)
+    profile = queryset.first()
 
-    return render(request, 'base/account.html', {"profile_form": profile_form, "user_form": user_form})
+    return render(request, 'base/account.html', {'profile': profile})
 
 def login_view(request):
     page = 'login'
@@ -32,14 +31,17 @@ def login_view(request):
 
         try:
             user = authenticate(request, username=username, password=password)
+            profile = Profile.objects.filter(user=request.user)
             if user is not None:
+                if profile is None:
+                    profile = Profile.objects.create(user=request.user)
+                    profile.save()
                 login(request, user)
-                messages.error(request, 'Successully logged in!')
-                
+                messages.success(request, 'Successully logged in!')
+                return redirect('shop/products')
         except:
-            messages.error(request, 'Username or password incorrect')
+            messages.error(request, 'Username or password incorrect')   
 
-    
     return render(request, 'base/login_register.html', {'page': page})
 
 
@@ -49,7 +51,6 @@ def user_logout(request):
 
 def user_register(request):
     page = 'register'
-
     form = UserCreationForm()
 
     if request.method == "POST":
@@ -62,6 +63,8 @@ def user_register(request):
             # This allows additional modifications to be made 
             # to the user instance before it's saved permanently.
             user.username = user.username.lower()
+            profile = Profile.objects.create(user=user)
+            profile.save()
             user.save()
             login(request, user)
             return redirect('home')

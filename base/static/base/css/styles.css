@@ -3,8 +3,8 @@
     --clr-bg-secondary: white;
     --clr-txt-primary: black;
     --clr-txt-secondary: black;
-    --clr-cta-primary: rgb(187, 50, 0);
-    --clr-cta-secondary: rgb(255, 192, 185);
+    --clr-cta-primary: rgb(0, 111, 155) ;
+    --clr-cta-secondary: skyblue;
     }
 
 .hamburger_trigger {

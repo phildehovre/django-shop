@@ -56,7 +56,7 @@ def product_detail(request, product_id):
 
 @login_required
 def update_basket(request):
-    order_id = request.POST.get("order_id")
+    order_id = request.POST.get("order_item_id")
     input_quantity = int(request.POST.get("quantity"))
     order_item = OrderItem.objects.get(id=order_id)
     product = order_item.product
@@ -88,7 +88,7 @@ def update_basket(request):
     order_item.save()
 
 def remove_from_basket(request):
-    order_item_id = request.POST.get("order_id")
+    order_item_id = request.POST.get("order_item_id")
     order_item = OrderItem.objects.get(id=order_item_id)
     product = order_item.product
     product.stock += order_item.quantity
@@ -112,7 +112,6 @@ def basket_view(request):
 
     basket = OrderItem.objects.filter(order__user=request.user)
 
-    print(basket)
 
     return render(
          request, 

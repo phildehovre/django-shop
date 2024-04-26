@@ -1,73 +1,92 @@
 {% block content %}
 <h1>Sidebar</h1>
-
+{% if page == 'product_list' %}
 <ul class="sidebar_ctn">
-    <form method="post" class="filter-form" >
-        {% csrf_token %}
-        {% for tag in tags %}
-        <li>
-                <input class="filter-checkbox" type="checkbox" {% if tag in selected_tags %} checked {% endif %} name="tag" value="{{ tag.id }}">
-            {{ tag.name }}
-        </li>
-        {% endfor %}
-    </form>
+  <form method="post" class="filter-form">
+    {% csrf_token %} {% for tag in tags %}
+    <li>
+      <input
+        class="filter-checkbox"
+        type="checkbox"
+        {%
+        if
+        tag
+        in
+        selected_tags
+        %}
+        checked
+        {%
+        endif
+        %}
+        name="tag"
+        value="{{ tag.id }}"
+      />
+      {{ tag.name }}
+    </li>
+    {% endfor %}
+  </form>
 </ul>
-{% block scripts %}
+{% endif %} {% if page == 'basket' %}
+<h1>basket sidebar</h1>
+{% endif %} {% if page == 'checkout' %}
+<h1>checkout sidebar</h1>
+{% endif %} {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll(".filter-checkbox");
     const form = document.querySelectorAll(".filter-form");
 
     // Function to update cookies
     const updateCookies = (tags) => {
-        document.cookie = `tags=${encodeURIComponent(JSON.stringify(tags))}; path=/`;
+      document.cookie = `tags=${encodeURIComponent(
+        JSON.stringify(tags)
+      )}; path=/`;
     };
 
     // Function to get tags from cookies
     const getTagsFromCookies = () => {
-        const cookies = document.cookie.split(';');
-        for (const cookie of cookies) {
-            const [name, value] = cookie.trim().split('=');
-            if (name === 'tags') {
-                return JSON.parse(decodeURIComponent(value));
-            }
+      const cookies = document.cookie.split(";");
+      for (const cookie of cookies) {
+        const [name, value] = cookie.trim().split("=");
+        if (name === "tags") {
+          return JSON.parse(decodeURIComponent(value));
         }
-        return [];
+      }
+      return [];
     };
 
     // Function to update checkbox checked status based on cookies
     const updateCheckboxStatus = () => {
-        const tags = getTagsFromCookies();
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = tags.includes(checkbox.value);
-        });
+      const tags = getTagsFromCookies();
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = tags.includes(checkbox.value);
+      });
     };
 
     // Call updateCheckboxStatus on page load
     updateCheckboxStatus();
 
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            // use of this keyword for brevity and legibility;
-            const tag = this.value;
-            const tags = getTagsFromCookies();
-            // If checked, add to tags
-            if (this.checked) {
-                tags.push(tag);
-            } else {
-                const index = tags.indexOf(tag);
-                //Else when uncheck, if tag exists, remove it from tags;
-                if (index !== -1) {
-                    tags.splice(index, 1);
-                }
-            }
-            updateCookies(tags);
-            const newUrl = `${window.location.pathname}?tag=${tags.join(',')}`;
-            history.pushState({}, '', newUrl);
-            form.forEach(form => form.submit());
-        });
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        // use of this keyword for brevity and legibility;
+        const tag = this.value;
+        const tags = getTagsFromCookies();
+        // If checked, add to tags
+        if (this.checked) {
+          tags.push(tag);
+        } else {
+          const index = tags.indexOf(tag);
+          //Else when uncheck, if tag exists, remove it from tags;
+          if (index !== -1) {
+            tags.splice(index, 1);
+          }
+        }
+        updateCookies(tags);
+        const newUrl = `${window.location.pathname}?tag=${tags.join(",")}`;
+        history.pushState({}, "", newUrl);
+        form.forEach((form) => form.submit());
+      });
     });
-});
+  });
 </script>
-{% endblock scripts %}
-{% endblock content %}
+{% endblock scripts %} {% endblock content %}

@@ -1,10 +1,10 @@
-{% extends "base/base.html" %}
-{% load humanize %}
-
-{% block content %}
+{% extends "base/base.html" %} {% load humanize %} {% block content %}
 <div class="shop_ctn">
-        {% block products %}
-        <!-- Product list -->
-        {% endblock products %}
+  <div class="sidebar_layout">{% include 'shop/sidebar.html' %}</div>
+  <div class="shop_layout">
+    {% block products %}
+    <!-- Product list -->
+    {% endblock products %}
+  </div>
 </div>
 {% endblock content %}

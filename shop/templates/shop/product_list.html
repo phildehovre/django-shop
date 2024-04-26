@@ -1,17 +1,9 @@
-{% extends 'shop/base.html' %} 
-{% block products %}
+{% extends 'shop/base.html' %} {% block products %}
 <div class="products_layout">
-
-  <div class="sidebar_layout">
-    {% include 'shop/sidebar.html' %}
-  </div>
   <div class="product_list_ctn">
     {% for product in products %}
     <article class="product_card">
-      <img
-      src="/{{ product.image }}"
-      alt="{{ product.name }}"
-      />
+      <img src="/{{ product.image }}" alt="{{ product.name }}" />
       <a href="{% url 'product_detail' product.id %}">
         <h2>{{ product.name }}</h2>
       </a>

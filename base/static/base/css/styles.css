@@ -1,3 +1,12 @@
+:root {
+    --clr-bg-primary: white;
+    --clr-bg-secondary: white;
+    --clr-txt-primary: black;
+    --clr-txt-secondary: black;
+    --clr-cta-primary: rgb(187, 50, 0);
+    --clr-cta-secondary: rgb(255, 192, 185);
+    }
+
 .hamburger_trigger {
     border: 1px solid rgb(155, 163, 197);
     height: 40px;
@@ -32,6 +41,45 @@
     object-fit: cover;
 }
 
-main {
-    margin: 0 auto;
+
+.btn_main {
+    border-radius: 6px;
+    background-color: var(--clr-cta-secondary);
+    border: 1px solid var(--clr-cta-primary);
+    padding: 1em;
+    max-width: 150px;
+    transition: all 250ms ease-in-out;
+
+    a {
+        text-decoration: none;
+        color: var(--clr-cta-primary);
+        text-transform: capitalize;
+    }
+
+}
+
+.btn_main:hover {
+    background-color: transparent;
+
+}
+
+.btn_secondary {
+    border-radius: 6px;
+    background-color: transparent;
+    border: 1px solid var(--clr-cta-primary);
+    color: var(--clr-cta-primary);
+    padding: .5em;
+    max-width: 150px;
+    transition: all 250ms ease-in-out;
+    
+    a {
+        text-decoration: none;
+        color: var(--clr-cta-primary);
+        text-transform: capitalize;
+    }
+    
+}
+
+.btn_secondary:hover {
+    background-color: var(--clr-bg-secondary);
 }

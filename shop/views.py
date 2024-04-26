@@ -9,6 +9,7 @@ def shop_view(request, selected_tags=None):
     """
     This view handles the shop page.
     """
+    page = "product_list"
     product_list = Product.objects.all()
     product_tags = ProductTag.objects.all()
 
@@ -28,7 +29,8 @@ def shop_view(request, selected_tags=None):
             {
                 "products": product_list, 
                 "tags": product_tags,
-                "selected_tags": selected_tags
+                "selected_tags": selected_tags,
+                'page': page
             })
 
 
@@ -104,6 +106,7 @@ def basket_view(request):
     update the quantity of items in their basket,
     and remove items from their basket.
     """
+    page = 'basket'
     if request.method == "POST":
         if request.POST.get("action") == "delete":
             remove_from_basket(request)
@@ -112,13 +115,13 @@ def basket_view(request):
 
     basket = OrderItem.objects.filter(order__user=request.user)
 
-
     return render(
          request, 
          'shop/basket.html', 
         {
             "basket": basket, 
-            "total": calculations.calculate_total(basket)
+            "total": calculations.calculate_total(basket),
+            'page': page
         })
 
 
@@ -129,13 +132,15 @@ def checkout_view(request):
     update the quantity of items in their basket,
     and remove items from their basket.
     """
-    basket = Order.objects.filter(user=request.user)
+    page = 'checkout'
+    basket = OrderItem.objects.filter(order__user=request.user)
 
     if request.method == "POST":
         print(request.POST)
 
             
     return render(request, 'shop/checkout.html', {
-         'basket': basket, 
-         "total": calculations.calculate_total(basket)
+        'basket': basket, 
+        'total': calculations.calculate_total(basket),
+        'page': page
          })

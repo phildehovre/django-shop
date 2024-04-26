@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Order, ProductTag
+from .models import Product, OrderItem, ProductTag, Order
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .helpers import calculations
@@ -38,10 +38,11 @@ def add_to_basket(request, product):
     if quantity > product.stock:
         messages.error(request, "Not enough stock")
     else:
-        order = Order.objects.create(user=request.user, product=product, quantity=quantity)
+        order = Order.objects.create(user=request.user)
+        order_item = OrderItem.objects.create(product=product, quantity=quantity, order=order)
         product.stock -= quantity
         product.save()
-        order.save()
+        order_item.save()
         messages.success(request, f"{product.name} ({quantity}) added to basket")
 
 def product_detail(request, product_id):    
@@ -53,55 +54,20 @@ def product_detail(request, product_id):
          
     return render(request, 'shop/product_detail.html', {"product": product})
 
-# @login_required
-# def update_basket(request):
-#     order_id = request.POST.get("order_id")
-#     input_quantity = int(request.POST.get("quantity"))
-#     order = Order.objects.get(id=order_id)
-#     product = order.product
-
-#     # Check if quantity is the same as order quantity
-#     # if so, return to basket
-#     validated_quantity = input_quantity
-
-#     if (order.quantity == input_quantity):
-#             return redirect("basket")
-
-#         # Check stock
-#     if input_quantity > product.stock:
-#             messages.error(request, f"Not enough stock, {product.stock} left")
-#             return redirect("basket")
-        
-#         # Check if quantity is greater than order quantity, 
-#         # updates as necessary
-#     if input_quantity > order.quantity:
-#             validated_quantity = input_quantity
-#             messages.success(request, f"{product.name} {validated_quantity} added to basket")
-#     if input_quantity < order.quantity:
-#             validated_quantity = order.quantity - input_quantity
-#             messages.success(request, f"{product.name} {order.quantity - input_quantity } removed from basket")
-        
-#     product.stock += validated_quantity
-#     order.quantity = validated_quantity
-#     product.save()
-#     order.save()
-
 @login_required
 def update_basket(request):
     order_id = request.POST.get("order_id")
     input_quantity = int(request.POST.get("quantity"))
-    order = Order.objects.get(id=order_id)
-    product = order.product
+    order_item = OrderItem.objects.get(id=order_id)
+    product = order_item.product
 
     print("input:", input_quantity )
 
-    diff = input_quantity - order.quantity
+    diff = input_quantity - order_item.quantity
     print(f"Differential: {diff}")
-    # Check if quantity is the same as order quantity
+    # Check if quantity is the same as order_item quantity
     # if so, return to basket
-    validated_quantity = input_quantity
-
-    if (order.quantity == input_quantity):
+    if (order_item.quantity == input_quantity):
             return
 
         # Check stock
@@ -117,17 +83,17 @@ def update_basket(request):
             messages.success(request, f"{product.name}, {abs(diff) } removed from basket")
         
     product.stock -= diff
-    order.quantity += diff
+    order_item.quantity += diff
     product.save()
-    order.save()
+    order_item.save()
 
 def remove_from_basket(request):
-    order_id = request.POST.get("order_id")
-    order = Order.objects.get(id=order_id)
-    product = order.product
-    product.stock += order.quantity
+    order_item_id = request.POST.get("order_id")
+    order_item = OrderItem.objects.get(id=order_item_id)
+    product = order_item.product
+    product.stock += order_item.quantity
     product.save()
-    order.delete()
+    order_item.delete()
     messages.success(request, f"{product.name} removed from basket")
     return redirect("basket")
 
@@ -144,7 +110,9 @@ def basket_view(request):
         else:
             update_basket(request)
 
-    basket = Order.objects.filter(user=request.user)
+    basket = OrderItem.objects.filter(order__user=request.user)
+
+    print(basket)
 
     return render(
          request, 

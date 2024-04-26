@@ -37,34 +37,39 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
-class Review(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviewer")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    rating = models.IntegerField(choices=RATING)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-        
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=ORDER_STATUS, default=0) 
+    status = models.IntegerField(choices=ORDER_STATUS, default=1) 
 
     def __str__(self):
-        return f"{self.user.username} -({self.quantity}) {self.product.name}"
+        return f"Order #{self.id} - User: {self.user.username}"
 
     def total(self):
-        return self.product.price * self.quantity
-    
-class Basket(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product)
-    created_at = models.DateTimeField(auto_now_add=True)
+        total = sum(item.total_item_price for item in self.order_items.all())
+        return total
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='order_items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"Order #{self.order.id} - {self.quantity} x {self.product.name}"
+
+    @property
+    def total_item_price(self):
+        return self.quantity * self.product.price
+    
+class ShippingInfo(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    zipcode = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    shipping_method = models.CharField(max_length=100)
+    shipping_status = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Shipping Info for Order #{self.order.id}"

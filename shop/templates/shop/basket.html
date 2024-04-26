@@ -1,45 +1,40 @@
-{% extends "shop/base.html" %}
-{% load humanize %}
-
-{% block content %}
-    <h1>Basket</h1>
-    <div>
-      {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% if basket|length == 0 %}
-      <p>Your basket is empty</p>
-      <a href="{% url 'shop' %}">Start shopping</a>
-      {% endif %}
-      {% for order in basket %}
-      <article class="product_card">
-        <a href="{% url 'product_detail' order.product.id %}">
-          <img
-          src="/{{ order.product.image }}"
-          alt="{{ order.product.name }}"
-          />
-          <h2>{{ order.product.name }}</h2>
-        </a>
-      </article>
-      <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="order_id" value="{{ order.id }}" />
-        <input type="number" name="quantity" value="{{ order.quantity }}" />
-      </form>
-      <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="delete"/>
-        <input type="hidden" name="order_id" value="{{ order.id }}" />
-        <button type="submit">Remove item(s)</button>
-      </form>
-      {% endfor %}
-      <p>Total: £{{ total|floatformat:2 }}</p>
-      <button>
-        <a href="{% url 'checkout' %}">checkout</a>    
-      </button>
-    </div>
-      {% endblock content %}
+{% extends "shop/base.html" %} {% load humanize %} {% block content %}
+<h1>Basket</h1>
+<div>
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %} {% if basket|length == 0 %}
+  <p>Your basket is empty</p>
+  <a href="{% url 'shop' %}">Start shopping</a>
+  {% endif %} {% for order_item in basket %}
+  <article class="product_card">
+    <a href="{% url 'product_detail' order_item.product.id %}">
+      <img
+        src="/{{ order_item.product.image }}"
+        alt="{{ order_item.product.name }}"
+      />
+      <h2>{{ order_item.product.name }}</h2>
+    </a>
+  </article>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="order_item_id" value="{{ order_item.id }}" />
+    <input type="number" name="quantity" value="{{ order_item.quantity }}" />
+  </form>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="delete" />
+    <input type="hidden" name="order_item_id" value="{{ order_item.id }}" />
+    <button type="submit">Remove item(s)</button>
+  </form>
+  {% endfor %}
+  <p>Total: £{{ total|floatformat:2 }}</p>
+  <button>
+    <a href="{% url 'checkout' %}">checkout</a>
+  </button>
+</div>
+{% endblock content %}

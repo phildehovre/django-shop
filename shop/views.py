@@ -144,3 +144,4 @@ def checkout_view(request):
         'total': calculations.calculate_total(basket),
         'page': page
          })
+

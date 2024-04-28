@@ -1,5 +1,4 @@
-{% block content %}
-{% load static %}
+{% block content %} {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
@@ -46,39 +45,39 @@
         {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a
-          class="nav-link {% if request.path == 'user_logout' %}active{% endif %}"
-          aria-current="page"
-          href="{% url 'user_logout' %}"
-          >Logout</a
+            class="nav-link {% if request.path == 'user_logout' %}active{% endif %}"
+            aria-current="page"
+            href="{% url 'user_logout' %}"
+            >Logout</a
           >
         </li>
         <li class="nav-item">
           <a
-          class="nav-link {% if request.path == 'basket' %}active{% endif %}"
-          aria-current="page"
-          href="{% url 'basket' %}"
-          >View basket</a
+            class="nav-link {% if request.path == 'basket' %}active{% endif %}"
+            aria-current="page"
+            href="{% url 'basket' %}"
+            >View basket</a
           >
         </li>
         {% else %}
         <li class="nav-item">
           <a
-          class="nav-link {% if request.path == 'login_register' %}active{% endif %}"
-          aria-current="page"
-          href="{% url 'login_register' %}"
-          >Login</a
+            class="nav-link {% if request.path == 'login_register' %}active{% endif %}"
+            aria-current="page"
+            href="{% url 'login_register' %}"
+            >Login</a
           >
         </li>
         {% endif %}
       </ul>
       {% if request.user.is_authenticated %}
-        <a class="hamburger_trigger" href="{% url 'profile' %}">
-          {% if request.user.profile.avatar %}
-          <img src="/{{ request.user.profile.avatar }}" alt="user avatar"/>
-          {% else %}
-          <i class="fa-solid fa-user" size="4xl"></i>
-          {% endif %}
-        </a>
+      <a class="hamburger_trigger" href="{% url 'account' %}">
+        {% if request.user.profile.avatar %}
+        <img src="/{{ request.user.profile.avatar }}" alt="user avatar" />
+        {% else %}
+        <i class="fa-solid fa-user" size="4xl"></i>
+        {% endif %}
+      </a>
       {% endif %}
     </div>
   </div>

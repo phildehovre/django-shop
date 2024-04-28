@@ -35,7 +35,7 @@ def account_view(request):
         except Exception as e:
             messages.error(request, f"There was an error: {str(e)}")
 
-    return render(request, 'base/account.html', {'page': page, 'profile': profile, 'profile_form': profile_form})
+    return render(request, 'base/account.html', {'page': page, 'account': profile, 'profile_form': profile_form})
 
 def profile_view(request):
     page = 'profile'
@@ -97,3 +97,31 @@ def user_register(request):
             messages.error(request,f'An error occurred during registration: {str(e)}')
         
     return render(request, "base/login_register.html", {'page': page, "form": form})
+
+def settings_view(request):
+    query = request.GET.get('q') if request.GET.get('q') != None else 'view'
+    page= query
+    profile = Profile.objects.filter(user=request.user).first()
+
+    profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
+
+    if request.method == "POST":
+        try:
+            profile_form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, 'Your profile was updated successfully.')
+                return redirect('profile')
+        except Exception as e:
+            messages.error(request, f"There was an error: {str(e)}")
+
+    return render(request, 'base/settings.html' , {'profile': profile, 'profile_form': profile_form, 'page': page})
+
+def orders_view(request):
+    return render(request, 'base/orders.html')
+
+def order_detail(request, order_id):
+    if order_id:
+        print(order_id)
+        
+    return render(request, 'base/orders.html', {'order_id': order_id})

@@ -3,6 +3,7 @@
 <h1>Checkout</h1>
 <a href="{% url 'basket' %}">Return to basket</a>
 <form method="POST">
+  {% csrf_token %}
   <ul class="checkout_list">
     {% for order in basket %}
     <li class="checkout_item">
@@ -13,6 +14,6 @@
     {% endfor %}
   </ul>
   <h2>{{ total }}</h2>
-  <input type="submit" value="Buy" />
+  <input type="submit" value="Purchase" />
 </form>
 {% endblock products %}

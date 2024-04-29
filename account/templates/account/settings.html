@@ -27,14 +27,21 @@
   <a href="{% url 'settings' %}?q=address">Add an address</a>
   {% else %}
   {% for address in addresses %}
-  <article class="product_card">
-    <h2>{{ address.name }}
-      <p>{{ address.address }}, {{ address.postcode }}</p>
-      <p>{{ address.city }}, {{ address.country }}</p>
-      <small>Additional info: {{ address.additional }}</small>
-    </article>
-    {% endfor %}
-    
+  <div class="card_ctn">
+    <article class="product_card">
+      <h2>{{ address.name }}
+        <p>{{ address.address }}, {{ address.postcode }}</p>
+        <p>{{ address.city }}, {{ address.country }}</p>
+        <small>Additional info: {{ address.additional }}</small>
+        <br />
+        <small>
+          <a href="{% url 'settings' %}?q=address&id={{ address.id }}">Edit</a>
+          <a href="{% url 'delete_address' address.id %}">Delete</a>
+        </small>
+      </article>
+    </div>
+      {% endfor %}
+    <a href="{% url 'settings' %}?q=address">+ New address</a>
     {% endif %}
     
     {% endif %} 

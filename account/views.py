@@ -57,13 +57,17 @@ def order_detail(request, order_id):
 
 
 def settings_view(request):
+    """
+    Handles address creation and profile updates.
+    The address CRUD operations are handled via a URL 'q' parameter.
+    Assigned to the variable 'page' this quickly switches between 
+    differents settings and operations.
+    """
     query = request.GET.get('q') if request.GET.get('q') != None else 'view'
     page= query
     profile = Profile.objects.filter(user=request.user).first()
     profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
 
-    addresses = Address.objects.filter(user=request.user)
-    address_form = UpdateAddressForm()
 
     if request.method == "POST" and page == 'edit':
         try:
@@ -75,16 +79,33 @@ def settings_view(request):
         except Exception as e:
             messages.error(request, f"There was an error: {str(e)}")
 
-    if request.method == 'POST' and page == 'address':
-        address_form = UpdateAddressForm(request.POST)
-        try:
-            if address_form.is_valid():
-                address = address_form.save(commit=False)
-                address.user = request.user 
-                address.save()
-            return redirect('settings')
-        except Exception as e:
-            messages(request, f"There was an error: {str(e)}")
+
+    addresses = Address.objects.filter(user=request.user)
+    address_form = UpdateAddressForm()
+
+    if page == 'address':
+        address_id = request.GET.get('id')
+        address = None
+        if address_id:
+            try:
+                address = Address.objects.get(id=address_id, user=request.user)
+            except Address.DoesNotExist:
+                pass
+
+        if request.method == 'POST':
+            address_form = UpdateAddressForm(request.POST, instance=address)
+            try:
+                if address_form.is_valid():
+                    address = address_form.save(commit=False)
+                    address.user = request.user 
+                    address.save()
+                    return redirect('settings')
+            except Exception as e:
+                messages.error(request, f"There was an error: {str(e)}")
+        else:
+            # Initialize the form with the address instance
+            address_form = UpdateAddressForm(instance=address)
+
        
 
     return render(request, 
@@ -96,3 +117,15 @@ def settings_view(request):
                     'addresses': addresses,
                     'address_form': address_form
                 })
+
+def delete_address(request, pk):
+    address = Address.objects.get(id=pk)
+
+    if request.method == 'POST':
+        address.delete()
+        return redirect('settings')
+    return render(request, 'account/delete_address.html', {'address': address})
+
+def payment_methods(request):
+
+    return render(request, 'account/payment_methods.html', {})

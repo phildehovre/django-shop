@@ -12,10 +12,13 @@ class Profile(models.Model):
         return self.user.username
 
 class Address(models.Model):
-    user=models.OneToOneField(User, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
     name=models.CharField(max_length=200, default='Default address')
     address=models.CharField(max_length=200)
     city=models.CharField(max_length=200)
     postcode=models.CharField(max_length=100)
     country=models.CharField(max_length=200)
     additional=models.TextField()
+
+    def __str__(self):
+        return f"{self.name} - {self.address}"

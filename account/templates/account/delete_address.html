@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <h1>Are you sure you want to delete this address?</h1>
+    <small>
+        {{ address.name }} - {{ address.address }}
+    </small>
+    <button>
+        <input type="submit" value="Delete"/>
+    </button>
+    <button>
+        <a href="{% url 'settings' %}">Cancel</a>
+    </button>
+</form>
+{% endblock content %}

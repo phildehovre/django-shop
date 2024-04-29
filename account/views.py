@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from shop.models import Order, OrderItem
-from base.forms import UpdateProfileForm
-from base.models import Profile
+from base.forms import UpdateProfileForm, UpdateAddressForm
+from base.models import Profile, Address
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -60,10 +60,12 @@ def settings_view(request):
     query = request.GET.get('q') if request.GET.get('q') != None else 'view'
     page= query
     profile = Profile.objects.filter(user=request.user).first()
-
     profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
 
-    if request.method == "POST":
+    addresses = Address.objects.filter(user=request.user)
+    address_form = UpdateAddressForm()
+
+    if request.method == "POST" and page == 'edit':
         try:
             profile_form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
             if profile_form.is_valid():
@@ -73,4 +75,24 @@ def settings_view(request):
         except Exception as e:
             messages.error(request, f"There was an error: {str(e)}")
 
-    return render(request, 'account/settings.html' , {'profile': profile, 'profile_form': profile_form, 'page': page})
+    if request.method == 'POST' and page == 'address':
+        address_form = UpdateAddressForm(request.POST)
+        try:
+            if address_form.is_valid():
+                address = address_form.save(commit=False)
+                address.user = request.user 
+                address.save()
+            return redirect('settings')
+        except Exception as e:
+            messages(request, f"There was an error: {str(e)}")
+       
+
+    return render(request, 
+                  'account/settings.html' , 
+                  {
+                    'profile': profile, 
+                    'profile_form': profile_form, 
+                    'page': page,
+                    'addresses': addresses,
+                    'address_form': address_form
+                })

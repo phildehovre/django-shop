@@ -1,22 +1,53 @@
-{% extends 'base/base.html' %} {% load static %} {% block content %}
-<h1>Settings for {{ profile.user.username }}</h1>
-{% if page == 'edit' %}
-<form method="POST">
-  {% csrf_token %} {{ profile_form.as_p }}
-  <input type="submit" />
-</form>
-{% endif %} {% if page == 'view' %}
-<h1>Your profile</h1>
-<button>
-  <a href="{% url 'settings' %}?q=edit">Edit profile</a>
-</button>
-<div class="profile_row">
-  <h2>Name:</h2>
-  <p>{{ profile.user.username }}</p>
-</div>
-<h2>About you:</h2>
-<div class="profile_avatar_ctn">
-  <img class="profile_avatar" src="/{{ profile.avatar }}" />
-</div>
-<p>{{ profile.bio }}</p>
-{% endif %} {% endblock content %}
+{% extends 'base/base.html' %} {% load static %} 
+{% block content %}
+<div class="page_ctn">
+  <a href="{% url  'settings' %}">Back</a>
+  {% if page == 'edit' %}
+  <form method="POST">
+    {% csrf_token %} {{ profile_form.as_p }}
+    <input type="submit" />
+  </form>
+  {% endif %} 
+  
+  {% if page == 'view' %}
+  <button>
+    <a href="{% url 'settings' %}?q=edit">Edit profile</a>
+  </button>
+  <div class="profile_row">
+    <p>{{ profile.user.username }}</p>
+    <div class="profile_avatar_ctn">
+      <img class="profile_avatar" src="/{{ profile.avatar }}" />
+    </div>
+  </div>
+  <h2>About you:</h2>
+  <p>{{ profile.bio }}</p>
+  
+  {% if addresses|length == 0 %}
+  <p>You have not provided an address yet.</p>
+  <a href="{% url 'settings' %}?q=address">Add an address</a>
+  {% else %}
+  {% for address in addresses %}
+  <article class="product_card">
+    <h2>{{ address.name }}
+      <p>{{ address.address }}, {{ address.postcode }}</p>
+      <p>{{ address.city }}, {{ address.country }}</p>
+      <small>Additional info: {{ address.additional }}</small>
+    </article>
+    {% endfor %}
+    
+    {% endif %}
+    
+    {% endif %} 
+    
+    {% if page == 'address' %}
+    <form method="POST">
+      {% csrf_token %} 
+      {{ address_form.as_p }}
+      <input type="submit" />
+      {{ address_form.errors }}
+    </form>
+    {% endif %}
+    
+  </div>
+    {% endblock content %}
+    

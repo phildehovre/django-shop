@@ -17,6 +17,7 @@ ORDER_STATUS = (
     (2, "PROCESSING"),
     (3, "SHIPPED"),
     (4, "COMPLETED"),
+    (5, "CANCELLED"),
 )
 
 class ProductTag(models.Model):

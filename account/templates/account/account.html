@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %} {% block content %} 
+<div class="account_ctn">
+{% if page == 'account' %}
+  <article class="product_card">
+    <h2><a href="{% url 'settings' %}">Account Settings</a></h2>
+    <small>Change your address, profile details and other information.</small>
+    <small></small>
+    <small></small>
+  </article>
+  <article class="product_card">
+    <h2><a href="{% url 'orders' %}">My orders</a></h2>
+    <small>View and track your orders, view your past orders.</small>
+    <small></small>
+    <small></small>
+  </article>
+  {% endif %} 
+</div>
+  {% endblock content %}

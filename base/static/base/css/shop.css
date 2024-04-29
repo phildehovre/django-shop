@@ -15,7 +15,7 @@
     gap: 1rem;
 }
 
-.product_list_ctn {
+.list_ctn {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -86,6 +86,7 @@
 
 .checkout_list {
     list-style: none;
+    padding: 0;
 
     .checkout_item {
         display: flex;

@@ -12,7 +12,7 @@
   <p>Your basket is empty</p>
   <a href="{% url 'shop' %}">Start shopping</a>
   {% endif %}
-  <div class="product_list_ctn">
+  <div class="list_ctn">
     {% for order_item in basket %}
     <article class="product_card">
       <a href="{% url 'product_detail' order_item.product.id %}">

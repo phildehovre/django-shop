@@ -6,7 +6,7 @@
     padding: 1rem;
 }
 
-.product_list_ctn {
+.list_ctn {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;

@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, OrderItem, ProductTag, Order
+from base.models import Address
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .helpers import calculations
+from django.db.models import Q
 
 
 def shop_view(request, selected_tags=None):
@@ -126,6 +128,8 @@ def basket_view(request):
 
 
 def checkout_view(request):
+    address_id = request.GET.get('address')
+    print(address_id)
     """
     This view handles the basket page. 
     It allows users to view the items in their basket,
@@ -134,14 +138,20 @@ def checkout_view(request):
     """
     page = 'checkout'
     basket = OrderItem.objects.filter(order__user=request.user)
+    addresses = Address.objects.filter(user=request.user).order_by('-default')
 
     if request.method == "POST":
-        print(request.POST)
+        address = Address.objects.get(id=address_id)
+        if address == None:
+            address = Address.objects.filter(Q(user=request.user), Q(default=True))
+
+        order = Order.objects.create(user=request.user, status=2, shipping=address)
 
             
     return render(request, 'shop/checkout.html', {
         'basket': basket, 
         'total': calculations.calculate_total(basket),
-        'page': page
+        'page': page,
+        'addresses': addresses
          })
 

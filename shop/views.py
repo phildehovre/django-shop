@@ -38,17 +38,22 @@ def shop_view(request, selected_tags=None):
 
 @login_required
 def add_to_basket(request, product):
-    quantity = int(request.POST.get("quantity"))
+    quantity = int(request.POST.get("quantity", 0))
+    product = Product.objects.get(id=product.id)
+
+    try:
+        order = Order.objects.get(user=request.user, status=0)
+    except Order.DoesNotExist:
+        order = Order.objects.create(user=request.user, status=0)
+
     if quantity > product.stock:
         messages.error(request, "Not enough stock")
     else:
-        order = Order.objects.create(user=request.user)
-        order_item = OrderItem.objects.create(product=product, quantity=quantity, order=order)
         product.stock -= quantity
         product.save()
-        order_item.save()
+        order_item = OrderItem.objects.create(product=product, quantity=quantity, order=order)
         messages.success(request, f"{product.name} ({quantity}) added to basket")
-
+        
 def product_detail(request, product_id):    
     queryset = Product.objects.all()
     product = get_object_or_404(queryset, id=product_id)

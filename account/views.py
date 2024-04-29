@@ -38,22 +38,30 @@ def profile_view(request):
 def orders_view(request):
 
     orders = Order.objects.filter(user=request.user)
+    print(orders)
 
     order_list = []
 
     for order in orders:
         order_items = OrderItem.objects.filter(order=order)
         if len(order_items) > 0:
-            order_list.append(order_items.first())
+            order_list.append(order_items)
 
-    return render(request, 'account/orders.html', {'order_list': order_list})
+    print(order_list)
 
-def order_detail(request, order_id):
-    if order_id:
-        order = Order.objects.filter(id=order_id).first()
+    return render(request, 'account/orders.html', {'order_list': orders})
 
+def order_detail(request, pk):
+    order = Order.objects.get(id=pk)
+    order_items = OrderItem.objects.filter(order=order)
+    print(order_items)
+    print(order)
         
-    return render(request, 'account/order_detail.html', {'order': order})
+    return render(request, 'account/order_detail.html', 
+                  {
+                    'order': order, 
+                    'order_items': order_items
+                   })
 
 
 def settings_view(request):

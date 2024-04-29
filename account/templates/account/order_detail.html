@@ -1,3 +1,6 @@
-{% extends 'shop/orders.html' %} {% block order_content %}
+{% extends 'account/orders.html' %} {% block order_content %}
 <h2>Order detail: {{ order }}</h2>
+{% for item in order_items %}
+    <h2>{{ item.product.name }}</h2>
+{% endfor %}
 {% endblock order_content%}

@@ -1,0 +1,16 @@
+{% block content %}
+<h1>Orders</h1>
+{% block order_content %}
+{% for order in order_list %} 
+<ul>
+    <li>
+        <a href="{% url 'order_detail' order.id %}">
+            
+            {{ order }}
+            </a>
+        </li>
+    </ul>
+    {% endfor %}
+    {% endblock order_content %}
+  {% endblock content %}
+</ul>

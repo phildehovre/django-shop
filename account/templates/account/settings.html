@@ -28,10 +28,19 @@
   {% else %}
   {% for address in addresses %}
   <div class="card_ctn">
-    <article class="product_card">
-      <h2>{{ address.name }}
-        <p>{{ address.address }}, {{ address.postcode }}</p>
-        <p>{{ address.city }}, {{ address.country }}</p>
+    <article class="product_card {% if address.default %} default {% endif %}">
+      <div>
+        <h2>{{ address.name }}</h2>
+        {% if address.default %}
+          <small>(Default address)</small>
+        {% else %}
+          <a href="{% url 'set_default' address.id %}">Set as default</a>
+        {% endif %}
+        <small></small>
+      </div>
+        <p>{{ address.address }}<br/>
+          {{ address.postcode }} {{ address.city }}<br/>
+        {{ address.country }}</p>
         <small>Additional info: {{ address.additional }}</small>
         <br />
         <small>

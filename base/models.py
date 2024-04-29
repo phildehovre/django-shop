@@ -19,6 +19,14 @@ class Address(models.Model):
     postcode=models.CharField(max_length=100)
     country=models.CharField(max_length=200)
     additional=models.TextField()
+    default=models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} - {self.address}"
+    
+    def save(self, *args, **kwargs):
+    # Check if there's already a default address for this user
+        if self.default:
+            # Unset default flag for other addresses of the same user
+            Address.objects.filter(user=self.user, default=True).exclude(pk=self.pk).update(default=False)
+        super().save(*args, **kwargs)

@@ -75,12 +75,15 @@ def settings_view(request):
             if profile_form.is_valid():
                 profile_form.save()
                 messages.success(request, 'Your profile was updated successfully.')
-                return redirect('profile')
+                return redirect('settings')
         except Exception as e:
             messages.error(request, f"There was an error: {str(e)}")
+    else:
+            profile_form = UpdateProfileForm(instance=profile)
 
 
-    addresses = Address.objects.filter(user=request.user)
+
+    addresses = Address.objects.filter(user=request.user).order_by('-default')
     address_form = UpdateAddressForm()
 
     if page == 'address':
@@ -125,6 +128,16 @@ def delete_address(request, pk):
         address.delete()
         return redirect('settings')
     return render(request, 'account/delete_address.html', {'address': address})
+
+def set_default(request, pk):
+    address=Address.objects.get(id=pk)
+
+    if address != None:
+        address.default = True
+        address.save()
+        return redirect('settings')
+    
+    return render(request, 'account/settings.html')
 
 def payment_methods(request):
 

@@ -20,4 +20,4 @@ class UpdateAddressForm(forms.ModelForm):
 
     class Meta:
         model = Address
-        fields = ['address', 'city', 'postcode', 'country', 'additional']
+        fields = ['name', 'address', 'city', 'postcode', 'country', 'additional', 'default']

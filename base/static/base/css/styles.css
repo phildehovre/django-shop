@@ -83,3 +83,7 @@
 .btn_secondary:hover {
     background-color: var(--clr-bg-secondary);
 }
+
+.default {
+    background-color: rgba(0, 128, 0, 0.158);
+}

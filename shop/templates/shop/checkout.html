@@ -1,5 +1,6 @@
 {% extends 'shop/base.html' %} {% block products %}
 
+{% if page == 'checkout' %}
 <h1>Checkout</h1>
 <a href="{% url 'basket' %}">Return to basket</a>
 <form method="POST">
@@ -43,6 +44,18 @@
       <h2>{{ total }}</h2>
       <input type="submit" value="Purchase" />
 </form>
+{% endif %}
+
+{% if page == 'confirmation' %}
+<div class="card_ctn success">
+  <h1>Your order was successfully placed:</h1>
+  {{ order }}
+  {% for item in order_items %}
+    <small>{{ item.product.name }} | {{ item.quantity }}</small>
+  {% endfor %}
+
+</div>
+{% endif %}
 
 {% block scripts %}
 <script>

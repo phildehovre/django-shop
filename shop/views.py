@@ -15,16 +15,12 @@ def shop_view(request, selected_tags=None):
     product_list = Product.objects.all()
     product_tags = ProductTag.objects.all()
 
-    print(request)
-
     if request.method == "POST":
         selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") != None else ['all']
         product_list = Product.objects.filter(tags__id__in=selected_tags)
         if len(selected_tags) == 0:
             product_list = Product.objects.all()
              
-
-
     return render(
             request, 
             'shop/product_list.html', 
@@ -54,9 +50,9 @@ def add_to_basket(request, product):
         order_item = OrderItem.objects.create(product=product, quantity=quantity, order=order)
         messages.success(request, f"{product.name} ({quantity}) added to basket")
         
-def product_detail(request, product_id):    
+def product_detail(request, pk):    
     queryset = Product.objects.all()
-    product = get_object_or_404(queryset, id=product_id)
+    product = get_object_or_404(queryset, id=pk)
 
     if request.method == "POST":
         add_to_basket(request, product)
@@ -120,7 +116,7 @@ def basket_view(request):
         else:
             update_basket(request)
 
-    basket = OrderItem.objects.filter(order__user=request.user)
+    basket = OrderItem.objects.filter(Q(order__user=request.user), Q(order__status=0))
 
     return render(
          request, 
@@ -134,29 +130,39 @@ def basket_view(request):
 
 def checkout_view(request):
     address_id = request.GET.get('address')
-    print(address_id)
-    """
-    This view handles the basket page. 
-    It allows users to view the items in their basket,
-    update the quantity of items in their basket,
-    and remove items from their basket.
-    """
     page = 'checkout'
-    basket = OrderItem.objects.filter(order__user=request.user)
+    order = Order.objects.get(user=request.user, status=0)
+    basket = OrderItem.objects.filter(order__user=request.user, order=order)
     addresses = Address.objects.filter(user=request.user).order_by('-default')
 
+    if order.DoesNotExist:
+         redirect('shop')
+
     if request.method == "POST":
-        address = Address.objects.get(id=address_id)
-        if address == None:
-            address = Address.objects.filter(Q(user=request.user), Q(default=True))
+        try:
+            if address_id:
+                address = Address.objects.get(id=address_id)
+            else:
+                address = Address.objects.filter(user=request.user, default=True).first()
 
-        order = Order.objects.create(user=request.user, status=2, shipping=address)
-
+            # Update order status
+            order.status = 2
+            order.shipping = address
+            order.save()
             
+            # Redirect to confirmation page
+            page = 'confirmation'
+        except Address.DoesNotExist:
+            # Handle case when address doesn't exist
+            messages.error(request, "Selected address does not exist.")
+        except Exception as e:
+            messages.error(request, f"There was an error: {str(e)}")
+
     return render(request, 'shop/checkout.html', {
         'basket': basket, 
         'total': calculations.calculate_total(basket),
         'page': page,
-        'addresses': addresses
-         })
+        'addresses': addresses,
+        'order': basket
+    })
 

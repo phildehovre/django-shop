@@ -2,7 +2,7 @@
     --clr-bg-primary: white;
     --clr-bg-secondary: white;
     --clr-txt-primary: black;
-    --clr-txt-secondary: black;
+    --clr-txt-secondary: rgb(146, 146, 146);
     --clr-cta-primary: rgb(0, 111, 155) ;
     --clr-cta-secondary: skyblue;
     }
@@ -86,4 +86,21 @@
 
 .default {
     background-color: rgba(0, 128, 0, 0.158);
+}
+
+/* Utility classes - heavily inspired by tailwind */
+
+.w-full {
+    width: 100%;
+}
+
+.justify-center {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
 }

@@ -2,12 +2,17 @@
 <div class="products_layout">
   <div class="list_ctn">
     {% for product in products %}
-    <article class="card">
+    <article class="card product">
       <img src="/{{ product.image }}" alt="{{ product.name }}" />
-      <a href="{% url 'product_detail' product.id %}">
-        <h2>{{ product.name }}</h2>
-      </a>
-      <small>£{{ product.price|floatformat:2 }}</small>
+      <div>
+        <div class="w-full justify-center flex-col">
+          <a href="{% url 'product_detail' product.id %}">
+            <h2>{{ product.name }}</h2>
+          </a>
+          <small>£{{ product.price|floatformat:2 }} </i></small>
+        </div>
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
     </article>
     {% endfor %}
   </div>

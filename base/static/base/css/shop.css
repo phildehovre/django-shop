@@ -23,8 +23,8 @@
 }
 
 .card {
-    border: 1px solid lightgrey;
     border-radius: 6px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.151);
     width: 350px;
     display: flex;
     flex-direction: column;
@@ -38,11 +38,14 @@
     h2 {
         font-size: 1rem;
     }
+
+    &.product {
+        display: flex;
+        justify-content: center;
+    }
 }
 
-.w-full {
-    width: 100%;
-}
+
 
 .basket_ctn {
     width: 100%;
@@ -81,10 +84,12 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    min-width: 150px;
+    color: var(--clr-txt-secondary);
 
     a {
         text-decoration: none;
-        color: black;
+        color: var(--clr-txt-secondary);
     }
 }
 

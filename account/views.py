@@ -4,6 +4,7 @@ from shop.models import Order, OrderItem
 from base.forms import UpdateProfileForm, UpdateAddressForm
 from base.models import Profile, Address
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 # Create your views here.
 
@@ -36,26 +37,23 @@ def profile_view(request):
 
 
 def orders_view(request):
-
-    orders = Order.objects.filter(user=request.user)
-    print(orders)
-
-    order_list = []
+    orders = Order.objects.filter(user=request.user).exclude(status=0)
+    items_array = []
 
     for order in orders:
         order_items = OrderItem.objects.filter(order=order)
         if len(order_items) > 0:
-            order_list.append(order_items)
+            items_array.append(order_items)
 
-    print(order_list)
-
-    return render(request, 'account/orders.html', {'order_list': orders})
+    return render(request, 'account/orders.html', 
+                  {
+                      'order_items': items_array,
+                      'orders': orders
+                })
 
 def order_detail(request, pk):
     order = Order.objects.get(id=pk)
     order_items = OrderItem.objects.filter(order=order)
-    print(order_items)
-    print(order)
         
     return render(request, 'account/order_detail.html', 
                   {

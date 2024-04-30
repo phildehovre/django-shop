@@ -18,7 +18,7 @@
   <div class="list_ctn">
     {% for address in addresses %}
     <div class="card_ctn">
-    <article class="product_card address_ctn" data-address-id="{{ address.id }}">
+    <article class="card address_ctn" data-address-id="{{ address.id }}">
       <div>
         <h2>{{ address.name }}</h2>
         {% if address.default %}

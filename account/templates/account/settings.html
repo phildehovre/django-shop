@@ -28,7 +28,7 @@
   {% else %}
   {% for address in addresses %}
   <div class="card_ctn">
-    <article class="product_card {% if address.default %} default {% endif %}">
+    <article class="card {% if address.default %} default {% endif %}">
       <div>
         <h2>{{ address.name }}</h2>
         {% if address.default %}

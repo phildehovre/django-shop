@@ -135,6 +135,9 @@ def checkout_view(request):
     basket = OrderItem.objects.filter(order__user=request.user, order=order)
     addresses = Address.objects.filter(user=request.user).order_by('-default')
 
+    if len(addresses) == 0:
+        messages.error(request, f"There are no shipping addresses, please enter your address in you account settings")
+
     if order.DoesNotExist:
          redirect('shop')
 

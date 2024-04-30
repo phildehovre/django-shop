@@ -42,7 +42,20 @@
       {% endfor %}
     </div>
       <h2>{{ total }}</h2>
-      <input type="submit" value="Purchase" />
+      {% if  addresses|length == 0 %}
+        <a href="{% url 'settings' %}">Provide a shipping address</a>
+        {% else %}
+        <input type="submit" value="Purchase" />
+        {% endif %}
+      {% if messages %}
+      <ul>
+          {% for message in messages %}
+          <li class="{{ message.tags }}">
+              {{ message }}
+          </li>
+              {% endfor %}
+          </ul>
+      {% endif %}
 </form>
 {% endif %}
 

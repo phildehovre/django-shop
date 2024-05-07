@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .helpers import calculations
 from django.db.models import Q
+from .forms import UpdateProductForm
 
 
 def shop_view(request, selected_tags=None):
@@ -22,6 +23,14 @@ def shop_view(request, selected_tags=None):
             product_list = Product.objects.all()
 
         product= request.POST.get('product') if request.POST.get('product') else None
+
+    edit_perm = False
+    add_perm = False
+    if (request.user != None):
+        edit_perm = request.user.has_perm('shop/change_product')
+        add_perm = request.user.has_perm('shop/add_product')
+        print('user can edit products')
+    
              
     return render(
             request, 
@@ -30,7 +39,8 @@ def shop_view(request, selected_tags=None):
                 "products": product_list, 
                 "tags": product_tags,
                 "selected_tags": selected_tags,
-                'page': page
+                'page': page,
+                "edit_perm": edit_perm,
             })
 
 
@@ -171,3 +181,45 @@ def checkout_view(request):
         'order': basket
     })
 
+def add_product(request):
+    page = 'add'
+
+    if request.method == "POST":
+        print(request.FILES)
+        form = UpdateProductForm(request.POST, request.FILES)  # Instantiate the form with request data
+        if form.is_valid():
+            form.save()  # Save the form data to the database
+            messages.success(request, f'Product was created successfully.')
+        else:
+            print(form.errors)
+            messages.error(request, f"There was an error: Form is not valid.")
+    else:
+        form = UpdateProductForm()  # Instantiate an empty form for GET requests
+
+    context = {
+        'page': page,
+        'form': form
+    }
+    return render(request, 'shop/add_product.html', context)
+
+def edit_product(request, pk):
+        page = 'edit'
+        product = Product.objects.get(id=pk)
+        if request.method == "POST":
+            try:
+                form = UpdateProductForm(request.POST, request.FILES, instance=product)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, f'{product.name} was updated succesfully.')
+                    return redirect('shop')
+            except Exception as e:
+                messages.error(request, f"There was an error: {str(e)}")
+        else:
+            form = UpdateProductForm(instance=product)
+
+        context = {
+            'product': product,
+            'page': page,
+            'form': form
+        }
+        return render(request, 'shop/add_product.html', context)

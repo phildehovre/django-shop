@@ -23,8 +23,8 @@
 }
 
 .card {
-    border: 1px solid lightgrey;
     border-radius: 6px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.151);
     width: 350px;
     display: flex;
     flex-direction: column;
@@ -38,12 +38,34 @@
     h2 {
         font-size: 1rem;
     }
+
+    &.product {
+        display: flex;
+        justify-content: center;
+    }
 }
+
+
 
 .basket_ctn {
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.ATB_btn {
+    padding: .5rem;
+    background-color: rgb(233, 233, 233);
+    border-radius: 2px;
+    outline: transparent;
+    transition: 150ms all ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+
+.ATB_btn:hover {
+    background-color: white;
+    outline: 1px solid rgb(233, 233, 233);
 }
 
 .messages > li {
@@ -77,15 +99,18 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    min-width: 150px;
+    color: var(--clr-txt-secondary);
 
     a {
         text-decoration: none;
-        color: black;
+        color: var(--clr-txt-secondary);
     }
 }
 
 .checkout_list {
     list-style: none;
+    padding: 0;
 
     .checkout_item {
         display: flex;

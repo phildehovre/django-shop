@@ -151,3 +151,7 @@ def set_default(request, pk):
 def payment_methods(request):
 
     return render(request, 'account/payment_methods.html', {})
+
+def security_view(request):
+    
+    return render(request, 'account/security.html')

@@ -1,4 +1,5 @@
 
+from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -12,5 +13,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='user_logout'),
     path('register/', views.user_register, name='user_register'),
     path('account/',include('account.urls'), name="account_urls"),
+    path("accounts/", include("django.contrib.auth.urls")),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

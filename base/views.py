@@ -15,7 +15,6 @@ def about_view(request):
     return render(request, 'base/about.html')
 
 
-
 def login_view(request):
     page = 'login'
     if request.method == "POST":

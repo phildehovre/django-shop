@@ -30,3 +30,4 @@ class Address(models.Model):
             # Unset default flag for other addresses of the same user
             Address.objects.filter(user=self.user, default=True).exclude(pk=self.pk).update(default=False)
         super().save(*args, **kwargs)
+

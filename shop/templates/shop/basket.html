@@ -36,10 +36,16 @@
     </article>
       {% endfor %}
   </div>
-  {% comment %} </div> {% endcomment %}
+  </div> 
     <p>Total: £{{ total|floatformat:2 }}</p>
+    {% if basket|length > 0 %}
     <button class="btn_main">
-      <a  href="{% url 'checkout' %}">checkout</a>
+      <a  href="{% url 'checkout' %}" class="">checkout</a>
     </button>
+    {% else %}
+    <button class="btn_main disabled" disabled>
+      Checkout
+    </button>
+    {% endif %}
   {% endblock products %}
 </div>

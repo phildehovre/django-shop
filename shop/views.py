@@ -20,6 +20,8 @@ def shop_view(request, selected_tags=None):
         product_list = Product.objects.filter(tags__id__in=selected_tags)
         if len(selected_tags) == 0:
             product_list = Product.objects.all()
+
+        product= request.POST.get('product') if request.POST.get('product') else None
              
     return render(
             request, 

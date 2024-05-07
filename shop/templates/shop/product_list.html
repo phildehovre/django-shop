@@ -1,20 +1,45 @@
 {% extends 'shop/base.html' %} {% block products %}
+{% if messages %}
+<ul class="list_ctn">
+  {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+  {% endif %}
 <div class="products_layout">
   <div class="list_ctn">
     {% for product in products %}
     <article class="card product">
       <img src="/{{ product.image }}" alt="{{ product.name }}" />
-      <div>
-        <div class="w-full justify-center flex-col">
+      <div class="w-full flex justify-between items-center" >
+        <div class="w-full  flex-col">
           <a href="{% url 'product_detail' product.id %}">
             <h2>{{ product.name }}</h2>
           </a>
           <small>£{{ product.price|floatformat:2 }} </i></small>
         </div>
-        <i class="fa-solid fa-cart-shopping"></i>
+        <form method="POST" id="add_to_basket_form">
+          {% csrf_token %}
+          <input type="hidden" value="{{ product }}" name="product"/>
+          <button class="ATB_btn" id="add_to_basket_button">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button>
+        </form>
       </div>
     </article>
     {% endfor %}
   </div>
 </div>
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('add_to_basket_button').addEventListener('click', function() {
+    document.getElementById('add_to_basket_form').submit();
+  });
+});
+  </script>
+</script>
+{% endblock scripts %}
 {% endblock products %}
+

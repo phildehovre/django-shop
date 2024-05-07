@@ -53,6 +53,21 @@
     flex-wrap: wrap;
 }
 
+.ATB_btn {
+    padding: .5rem;
+    background-color: rgb(233, 233, 233);
+    border-radius: 2px;
+    outline: transparent;
+    transition: 150ms all ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+
+.ATB_btn:hover {
+    background-color: white;
+    outline: 1px solid rgb(233, 233, 233);
+}
+
 .messages > li {
     display: flex;
     justify-content: center;

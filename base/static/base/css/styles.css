@@ -58,9 +58,13 @@
 
 }
 
-.btn_main:hover {
+.btn_main:hover:not(.disabled) {
     background-color: transparent;
+}
 
+.btn_main.disabled {
+    color: grey;
+    background-color: white;
 }
 
 .btn_secondary {
@@ -90,16 +94,26 @@
 
 /* Utility classes - heavily inspired by tailwind */
 
+.flex {
+    display: flex;
+}
+
 .w-full {
     width: 100%;
 }
 
 .justify-center {
-    display: flex;
     justify-content: center;
     text-align: center;
 }
+.justify-center {
+    justify-content: space-between;
+    text-align: center;
+}
 
+.items-center {
+    align-items: center;
+}
 .flex-col {
     display: flex;
     flex-direction: column;

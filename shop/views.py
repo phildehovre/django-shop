@@ -29,7 +29,7 @@ def shop_view(request, selected_tags=None):
     if (request.user != None):
         edit_perm = request.user.has_perm('shop/change_product')
         add_perm = request.user.has_perm('shop/add_product')
-        print('user can edit products')
+        print(add_perm, edit_perm)
     
              
     return render(
@@ -41,6 +41,7 @@ def shop_view(request, selected_tags=None):
                 "selected_tags": selected_tags,
                 'page': page,
                 "edit_perm": edit_perm,
+                "add_perm": add_perm
             })
 
 
@@ -139,7 +140,7 @@ def basket_view(request):
             'page': page
         })
 
-
+@login_required
 def checkout_view(request):
     address_id = request.GET.get('address')
     page = 'checkout'
@@ -181,20 +182,26 @@ def checkout_view(request):
         'order': basket
     })
 
+@login_required
 def add_product(request):
     page = 'add'
 
     if request.method == "POST":
         print(request.FILES)
         form = UpdateProductForm(request.POST, request.FILES)  # Instantiate the form with request data
+        # print('Form: ', form)
         if form.is_valid():
             form.save()  # Save the form data to the database
             messages.success(request, f'Product was created successfully.')
+            return redirect('shop')
         else:
             print(form.errors)
             messages.error(request, f"There was an error: Form is not valid.")
     else:
         form = UpdateProductForm()  # Instantiate an empty form for GET requests
+    
+    add_product_perm = request.user.has_perm('shop/add_product')
+    print(add_product_perm)
 
     context = {
         'page': page,
@@ -202,6 +209,7 @@ def add_product(request):
     }
     return render(request, 'shop/add_product.html', context)
 
+@login_required
 def edit_product(request, pk):
         page = 'edit'
         product = Product.objects.get(id=pk)

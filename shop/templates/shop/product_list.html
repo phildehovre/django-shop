@@ -6,12 +6,15 @@
   {% endfor %}
 </ul>
 {% endif %}
+{% if add_perm == True %}
 <a href="{% url 'add_product' %}">Add new product</a>
+{% endif %}
 <div class="products_layout">
   <div class="list_ctn">
     {% for product in products %}
     <article class="card product">
       <img src="/{{ product.image }}" alt="{{ product.name }}" />
+      {{ product.image }}
       <div class="w-full flex justify-between items-center" >
         <div class="w-full  flex-col">
           <a href="{% url 'product_detail' product.id %}">

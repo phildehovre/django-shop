@@ -201,11 +201,11 @@ def add_product(request):
         form = UpdateProductForm()  # Instantiate an empty form for GET requests
     
     add_product_perm = request.user.has_perm('shop/add_product')
-    print(add_product_perm)
 
     context = {
         'page': page,
-        'form': form
+        'form': form,
+        'add_product_perm': add_product_perm
     }
     return render(request, 'shop/add_product.html', context)
 

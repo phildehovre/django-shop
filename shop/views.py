@@ -9,40 +9,37 @@ from .forms import UpdateProductForm
 
 
 def shop_view(request, selected_tags=None):
-    """
-    This view handles the shop page.
-    """
     page = "product_list"
     product_list = Product.objects.all()
     product_tags = ProductTag.objects.all()
 
     if request.method == "POST":
-        selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") != None else ['all']
-        product_list = Product.objects.filter(tags__id__in=selected_tags)
-        if len(selected_tags) == 0:
-            product_list = Product.objects.all()
-
-        product= request.POST.get('product') if request.POST.get('product') else None
+        selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") else ['all']
+        search = request.POST.get('search')
+        
+        if selected_tags != ['all']:
+            product_list = product_list.filter(tags__id__in=selected_tags)
+        if search:
+            product_list = product_list.filter(Q(name__contains=search) | Q(description__contains=search))
 
     edit_perm = False
     add_perm = False
-    if (request.user != None):
+    if request.user:
         edit_perm = request.user.has_perm('shop/change_product')
         add_perm = request.user.has_perm('shop/add_product')
-        print(add_perm, edit_perm)
-    
-             
+
     return render(
-            request, 
-            'shop/product_list.html', 
-            {
-                "products": product_list, 
-                "tags": product_tags,
-                "selected_tags": selected_tags,
-                'page': page,
-                "edit_perm": edit_perm,
-                "add_perm": add_perm
-            })
+        request, 
+        'shop/product_list.html', 
+        {
+            "products": product_list, 
+            "tags": product_tags,
+            "selected_tags": selected_tags,
+            'page': page,
+            "edit_perm": edit_perm,
+            "add_perm": add_perm
+        }
+    )
 
 
 @login_required
@@ -231,3 +228,4 @@ def edit_product(request, pk):
             'form': form
         }
         return render(request, 'shop/add_product.html', context)
+

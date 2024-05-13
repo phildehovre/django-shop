@@ -11,6 +11,7 @@ urlpatterns = [
     path('settings/', views.settings_view, name="settings"),
     path('settings/<str:pk>', views.set_default, name="set_default"),
     path('payments/', views.payment_methods, name="payment_methods"),
+    path('security/', views.security_view, name="security"),
     path('delete_address/<str:pk>/', views.delete_address, name="delete_address"),
 ]
 

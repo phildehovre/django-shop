@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %} {% load static %} 
 {% block content %}
 <div class="page_ctn">
-  <a href="{% url  'settings' %}">Back</a>
+  <a href="{% url  'account' %}">Back</a>
   {% if page == 'edit' %}
   <form method="POST">
     {% csrf_token %} {{ profile_form.as_p }}

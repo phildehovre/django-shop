@@ -25,6 +25,9 @@ def account_view(request):
         except Exception as e:
             messages.error(request, f"There was an error: {str(e)}")
 
+    user = request.user
+    print(user.has_perm( 'shop.add_product'))
+
     return render(request, 'account/account.html', {'page': page, 'account': profile, 'profile_form': profile_form})
 
 def profile_view(request):
@@ -148,3 +151,7 @@ def set_default(request, pk):
 def payment_methods(request):
 
     return render(request, 'account/payment_methods.html', {})
+
+def security_view(request):
+    
+    return render(request, 'account/security.html')

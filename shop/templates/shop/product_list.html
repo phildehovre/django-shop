@@ -5,7 +5,10 @@
     <li class="{{ message.tags }}">{{ message }}</li>
   {% endfor %}
 </ul>
-  {% endif %}
+{% endif %}
+{% if add_perm == True %}
+<a href="{% url 'add_product' %}">Add new product</a>
+{% endif %}
 <div class="products_layout">
   <div class="list_ctn">
     {% for product in products %}
@@ -18,12 +21,18 @@
           </a>
           <small>£{{ product.price|floatformat:2 }} </i></small>
         </div>
-        <form method="POST" id="add_to_basket_form">
-          {% csrf_token %}
-          <input type="hidden" value="{{ product }}" name="product"/>
-          <button class="ATB_btn" id="add_to_basket_button">
-            <i class="fa-solid fa-cart-shopping"></i>
-          </button>
+        <span style="display: flex; gap: .25rem">
+          <form method="POST" id="add_to_basket_form">
+            {% csrf_token %}
+            <input type="hidden" value="{{ product }}" name="product"/>
+            <button class="ATB_btn" id="add_to_basket_button">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </button>
+          </form >
+            {% if edit_perm == True %}
+            <a href="{% url 'edit_product' product.id %}">Edit</a>
+          </span>
+            {% endif %}
         </form>
       </div>
     </article>

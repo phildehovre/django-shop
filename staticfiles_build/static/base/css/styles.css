@@ -2,7 +2,7 @@
     --clr-bg-primary: white;
     --clr-bg-secondary: white;
     --clr-txt-primary: black;
-    --clr-txt-secondary: black;
+    --clr-txt-secondary: rgb(146, 146, 146);
     --clr-cta-primary: rgb(0, 111, 155) ;
     --clr-cta-secondary: skyblue;
     }
@@ -58,9 +58,13 @@
 
 }
 
-.btn_main:hover {
+.btn_main:hover:not(.disabled) {
     background-color: transparent;
+}
 
+.btn_main.disabled {
+    color: grey;
+    background-color: white;
 }
 
 .btn_secondary {
@@ -82,4 +86,35 @@
 
 .btn_secondary:hover {
     background-color: var(--clr-bg-secondary);
+}
+
+.default {
+    background-color: rgba(0, 128, 0, 0.158);
+}
+
+/* Utility classes - heavily inspired by tailwind */
+
+.flex {
+    display: flex;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.justify-center {
+    justify-content: center;
+    text-align: center;
+}
+.justify-center {
+    justify-content: space-between;
+    text-align: center;
+}
+
+.items-center {
+    align-items: center;
+}
+.flex-col {
+    display: flex;
+    flex-direction: column;
 }

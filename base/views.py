@@ -8,14 +8,11 @@ from .forms import UpdateProfileForm
 
 # Create your views here.
 
-def home_view(request):
-    print("rendering home: ", request)
+def base_view(request):
     return render(request, 'base/base.html')
 
 def about_view(request):
-    print("rendering about: ", request)
     return render(request, 'base/about.html')
-
 
 
 def login_view(request):

@@ -20,6 +20,7 @@
         <input name="password" type="password" placeholder="********" />
         <input type="submit" value="Submit" />
         <span>
+            <a href="{% url 'password_reset' %}">Forgot your password?</a>
             <p style="display: inline-block">Don't have an account yet?</p>
             <a href="{% url 'user_register' %}">Register</a>
             <span>

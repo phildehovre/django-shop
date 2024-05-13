@@ -5,33 +5,41 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .helpers import calculations
 from django.db.models import Q
+from .forms import UpdateProductForm
 
 
 def shop_view(request, selected_tags=None):
-    """
-    This view handles the shop page.
-    """
     page = "product_list"
     product_list = Product.objects.all()
     product_tags = ProductTag.objects.all()
 
     if request.method == "POST":
-        selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") != None else ['all']
-        product_list = Product.objects.filter(tags__id__in=selected_tags)
-        if len(selected_tags) == 0:
-            product_list = Product.objects.all()
+        selected_tags = request.POST.getlist("tag") if request.POST.getlist("tag") else ['all']
+        search = request.POST.get('search')
+        
+        if selected_tags != ['all']:
+            product_list = product_list.filter(tags__id__in=selected_tags)
+        if search:
+            product_list = product_list.filter(Q(name__contains=search) | Q(description__contains=search))
 
-        product= request.POST.get('product') if request.POST.get('product') else None
-             
+    edit_perm = False
+    add_perm = False
+    if request.user:
+        edit_perm = request.user.has_perm('shop/change_product')
+        add_perm = request.user.has_perm('shop/add_product')
+
     return render(
-            request, 
-            'shop/product_list.html', 
-            {
-                "products": product_list, 
-                "tags": product_tags,
-                "selected_tags": selected_tags,
-                'page': page
-            })
+        request, 
+        'shop/product_list.html', 
+        {
+            "products": product_list, 
+            "tags": product_tags,
+            "selected_tags": selected_tags,
+            'page': page,
+            "edit_perm": edit_perm,
+            "add_perm": add_perm
+        }
+    )
 
 
 @login_required
@@ -129,7 +137,7 @@ def basket_view(request):
             'page': page
         })
 
-
+@login_required
 def checkout_view(request):
     address_id = request.GET.get('address')
     page = 'checkout'
@@ -170,4 +178,54 @@ def checkout_view(request):
         'addresses': addresses,
         'order': basket
     })
+
+@login_required
+def add_product(request):
+    page = 'add'
+
+    if request.method == "POST":
+        print(request.FILES)
+        form = UpdateProductForm(request.POST, request.FILES)  # Instantiate the form with request data
+        # print('Form: ', form)
+        if form.is_valid():
+            form.save()  # Save the form data to the database
+            messages.success(request, f'Product was created successfully.')
+            return redirect('shop')
+        else:
+            print(form.errors)
+            messages.error(request, f"There was an error: Form is not valid.")
+    else:
+        form = UpdateProductForm()  # Instantiate an empty form for GET requests
+    
+    add_product_perm = request.user.has_perm('shop/add_product')
+    print(add_product_perm)
+
+    context = {
+        'page': page,
+        'form': form
+    }
+    return render(request, 'shop/add_product.html', context)
+
+@login_required
+def edit_product(request, pk):
+        page = 'edit'
+        product = Product.objects.get(id=pk)
+        if request.method == "POST":
+            try:
+                form = UpdateProductForm(request.POST, request.FILES, instance=product)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, f'{product.name} was updated succesfully.')
+                    return redirect('shop')
+            except Exception as e:
+                messages.error(request, f"There was an error: {str(e)}")
+        else:
+            form = UpdateProductForm(instance=product)
+
+        context = {
+            'product': product,
+            'page': page,
+            'form': form
+        }
+        return render(request, 'shop/add_product.html', context)
 

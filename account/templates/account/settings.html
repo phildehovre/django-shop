@@ -12,7 +12,7 @@
   
   {% if page == 'view' %}
    
-
+  <h1 class="page_section_heading">Profile</h1>
   <div class="profile_header">
     <div class="profile_avatar_ctn">
       <img class="profile_avatar" src="{{ user.profile.avatar.url }}" />
@@ -20,26 +20,27 @@
     <h3>{{ profile.user.username|title }}</h3>
     <p>{{ profile.bio }}</p>
     <small class="w-full text-right">
-        <a href="{% url 'settings' %}?q=edit" class="user_action_link">
-          <i class="fa-solid fa-gear"></i>
-        </a>
+      <a href="{% url 'settings' %}?q=edit" class="user_action_link">
+        <i class="fa-solid fa-gear"></i>
+      </a>
+    </small>
+  </div>
+  
+  <h1 class="page_section_heading">Shipping options</h1>
+  {% if addresses|length == 0 %}
+  <p>You have not provided an address yet.</p>
+  <a href="{% url 'settings' %}?q=address" class="user_action_link w-full text-right">Add an address
+    <i class="fa-solid fa-plus"></i>
+  </a>
+  {% else %}
+  {% for address in addresses %}
+  <article class="card {% if address.default %} default {% endif %}">
+    <div>
+      {% if address.default %}
+      <small>Default address
+        <i class="fa-solid fa-circle-check primary"></i>
       </small>
-    </div>
-    
-    {% if addresses|length == 0 %}
-    <p>You have not provided an address yet.</p>
-    <a href="{% url 'settings' %}?q=address" class="user_action_link w-full text-right">Add an address
-      <i class="fa-solid fa-plus"></i>
-    </a>
-    {% else %}
-    {% for address in addresses %}
-    <article class="card {% if address.default %} default {% endif %}">
-      <div>
-        {% if address.default %}
-        <small>Default address
-          <i class="fa-solid fa-circle-check primary"></i>
-        </small>
-
+      
         {% endif %}
         <h2>{{ address.name }}</h2>
     </div>

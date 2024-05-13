@@ -10,7 +10,7 @@
   <div class="list_ctn">
     {% for product in products %}
     <article class="card product">
-      <img src="/{{ product.image }}" alt="{{ product.name }}" />
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" />
       <div class="w-full flex justify-between items-center" >
         <div class="w-full  flex-col">
           <a href="{% url 'product_detail' product.id %}">

@@ -3,47 +3,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.http import HttpResponse
-from django.db.models import Q
 from .models import Profile
 from .forms import UpdateProfileForm
 
 # Create your views here.
 
-def home_view(request):
-    print("rendering home: ", request)
+def base_view(request):
     return render(request, 'base/base.html')
 
 def about_view(request):
-    print("rendering about: ", request)
     return render(request, 'base/about.html')
 
-def account_view(request):
-    page = 'account'
-    queryset = Profile.objects.filter(user=request.user)
-    profile = queryset.first()
-
-    profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
-
-    if request.method == "POST":
-        try:
-            profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-            if profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, 'Your profile was updated successfully.')
-                return redirect('profile')
-        except Exception as e:
-            messages.error(request, f"There was an error: {str(e)}")
-
-    return render(request, 'base/account.html', {'page': page, 'profile': profile, 'profile_form': profile_form})
-
-def profile_view(request):
-    page = 'profile'
-    queryset = Profile.objects.filter(user=request.user)
-    profile = queryset.first()
-    print(profile.bio)
-
-    return render(request, 'base/account.html', {'page': page, 'profile': profile})
 
 def login_view(request):
     page = 'login'
@@ -97,3 +67,4 @@ def user_register(request):
             messages.error(request,f'An error occurred during registration: {str(e)}')
         
     return render(request, "base/login_register.html", {'page': page, "form": form})
+

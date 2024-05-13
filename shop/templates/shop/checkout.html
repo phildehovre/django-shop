@@ -1,8 +1,10 @@
 {% extends 'shop/base.html' %} {% block products %}
 
+{% if page == 'checkout' %}
 <h1>Checkout</h1>
 <a href="{% url 'basket' %}">Return to basket</a>
 <form method="POST">
+  {% csrf_token %}
   <ul class="checkout_list">
     {% for order in basket %}
     <li class="checkout_item">
@@ -12,7 +14,87 @@
     </li>
     {% endfor %}
   </ul>
-  <h2>{{ total }}</h2>
-  <input type="submit" value="Buy" />
+  
+  <div class="list_ctn">
+    {% for address in addresses %}
+    <div class="card_ctn">
+    <article class="card address_ctn" data-address-id="{{ address.id }}">
+      <div>
+        <h2>{{ address.name }}</h2>
+        {% if address.default %}
+          <small>(Default address)</small>
+        {% else %}
+          <a href="{% url 'set_default' address.id %}">Set as default</a>
+          {% endif %}
+          <small></small>
+        </div>
+        <p>{{ address.address }}<br/>
+          {{ address.postcode }} {{ address.city }}<br/>
+          {{ address.country }}</p>
+          <small>Additional info: {{ address.additional }}</small>
+          <br />
+          <small>
+            <a href="{% url 'settings' %}?q=address&id={{ address.id }}">Edit</a>
+            <a href="{% url 'delete_address' address.id %}">Delete</a>
+          </small>
+        </article>
+      </div>
+      {% endfor %}
+    </div>
+      <h2>{{ total }}</h2>
+      {% if  addresses|length == 0 %}
+        <a href="{% url 'settings' %}">Provide a shipping address</a>
+        {% else %}
+        <input type="submit" value="Purchase" />
+        {% endif %}
+      {% if messages %}
+      <ul>
+          {% for message in messages %}
+          <li class="{{ message.tags }}">
+              {{ message }}
+          </li>
+              {% endfor %}
+          </ul>
+      {% endif %}
 </form>
+{% endif %}
+
+{% if page == 'confirmation' %}
+<div class="card_ctn success">
+  <h1>Your order was successfully placed:</h1>
+  {{ order }}
+  {% for item in order_items %}
+    <small>{{ item.product.name }} | {{ item.quantity }}</small>
+  {% endfor %}
+
+</div>
+{% endif %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let previousIndex = null;
+    const addresses = document.querySelectorAll('.address_ctn');
+    addresses.forEach((address, i) => {
+      address.addEventListener('click', () => {
+        const addressId = address.dataset.addressId;
+        if (previousIndex !== null) {
+          // Remove border from the previously clicked address
+          addresses[previousIndex].style.outline = 'none';
+        }
+        // Add outline to the clicked address
+        address.style.outline = '2px solid grey';
+        // Update previousIndex to the current index
+        previousIndex = i;
+        
+        // Optionally, you can update the URL with the addressId
+        const newUrl = `${window.location.pathname}?address=${addressId}`;
+        history.pushState({}, "", newUrl);
+      });
+    });
+  });
+</script>
+  
+</script>
+{% endblock scripts %}
 {% endblock products %}

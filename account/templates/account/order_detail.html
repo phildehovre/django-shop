@@ -1,0 +1,12 @@
+{% extends 'account/orders.html' %} {% block order_content %}
+    <h2>Placed on {{ order.created_at }}</h2>
+    <ul class="card_ctn">
+        {% for item in order_items %}
+        <li>
+            <a href="{% url 'product_detail' item.product.id %}">
+                {{ item.product.name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock order_content%}

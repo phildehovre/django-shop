@@ -1,0 +1,120 @@
+:root {
+    --clr-bg-primary: white;
+    --clr-bg-secondary: white;
+    --clr-txt-primary: black;
+    --clr-txt-secondary: rgb(146, 146, 146);
+    --clr-cta-primary: rgb(0, 111, 155) ;
+    --clr-cta-secondary: skyblue;
+    }
+
+.hamburger_trigger {
+    border: 1px solid rgb(155, 163, 197);
+    height: 40px;
+    width:40px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    img {
+        border-radius: 100%;
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+    }
+}
+
+.profile_row {
+    display: flex;
+    align-items: center;
+}
+
+.profile_avatar_ctn {
+    height: 5em;
+    width: 5em;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.profile_avatar {
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.btn_main {
+    border-radius: 6px;
+    background-color: var(--clr-cta-secondary);
+    border: 1px solid var(--clr-cta-primary);
+    padding: 1em;
+    max-width: 150px;
+    transition: all 250ms ease-in-out;
+
+    a {
+        text-decoration: none;
+        color: var(--clr-cta-primary);
+        text-transform: capitalize;
+    }
+
+}
+
+.btn_main:hover:not(.disabled) {
+    background-color: transparent;
+}
+
+.btn_main.disabled {
+    color: grey;
+    background-color: white;
+}
+
+.btn_secondary {
+    border-radius: 6px;
+    background-color: transparent;
+    border: 1px solid var(--clr-cta-primary);
+    color: var(--clr-cta-primary);
+    padding: .5em;
+    max-width: 150px;
+    transition: all 250ms ease-in-out;
+    
+    a {
+        text-decoration: none;
+        color: var(--clr-cta-primary);
+        text-transform: capitalize;
+    }
+    
+}
+
+.btn_secondary:hover {
+    background-color: var(--clr-bg-secondary);
+}
+
+.default {
+    background-color: rgba(0, 128, 0, 0.158);
+}
+
+/* Utility classes - heavily inspired by tailwind */
+
+.flex {
+    display: flex;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.justify-center {
+    justify-content: center;
+    text-align: center;
+}
+.justify-center {
+    justify-content: space-between;
+    text-align: center;
+}
+
+.items-center {
+    align-items: center;
+}
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Orders</h1>
+{% block order_content %}
+{% for order in orders %} 
+<ul class="card w-full">
+    <li>
+        <a href="{% url 'order_detail' order.id %}">
+            {{ order }}
+        </a>
+        {% for array in order_items %}
+        <ul>
+            {% for item in array %}
+                {% if item.order.id == order.id %}
+                <li>
+                    <small>{{item.product.name}}</small>
+                    <small>{{item.order.id}}</small>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endfor %}
+        </li>
+    </ul>
+{% endfor %}
+{% endblock order_content %}
+{% endblock content %}
+</ul>

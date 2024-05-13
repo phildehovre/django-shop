@@ -1,0 +1,11 @@
+.account_ctn {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+
+    article {
+        min-height: 100px;
+    }
+}

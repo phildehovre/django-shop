@@ -12,9 +12,9 @@
   <p>Your basket is empty</p>
   <a href="{% url 'shop' %}">Start shopping</a>
   {% endif %}
-  <div class="product_list_ctn">
+  <div class="list_ctn">
     {% for order_item in basket %}
-    <article class="product_card">
+    <article class="card">
       <a href="{% url 'product_detail' order_item.product.id %}">
         <img
           src="/{{ order_item.product.image }}"
@@ -36,10 +36,16 @@
     </article>
       {% endfor %}
   </div>
-  {% comment %} </div> {% endcomment %}
+  </div> 
     <p>Total: £{{ total|floatformat:2 }}</p>
+    {% if basket|length > 0 %}
     <button class="btn_main">
-      <a  href="{% url 'checkout' %}">checkout</a>
+      <a  href="{% url 'checkout' %}" class="">checkout</a>
     </button>
+    {% else %}
+    <button class="btn_main disabled" disabled>
+      Checkout
+    </button>
+    {% endif %}
   {% endblock products %}
 </div>

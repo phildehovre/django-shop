@@ -1,0 +1,126 @@
+.shop_ctn {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+}
+
+.shop_layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
+.list_ctn {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.card {
+    border-radius: 6px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.151);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    padding: .5em;
+
+    img {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    &.product {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+
+
+.basket_ctn {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.ATB_btn {
+    padding: .5rem;
+    background-color: rgb(233, 233, 233);
+    border-radius: 2px;
+    outline: transparent;
+    transition: 150ms all ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+
+.ATB_btn:hover {
+    background-color: white;
+    outline: 1px solid rgb(233, 233, 233);
+}
+
+.messages > li {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 6px;
+    list-style: none;
+}
+
+.messages .error {
+    margin: .5em;
+    background-color: rgba(240, 128, 128, 0.459);
+    border: 1px solid rgb(255, 69, 69);
+    color: rgb(136, 31, 31);
+    width: 100%;
+    padding: .5em;
+}
+
+.messages .success {
+    margin: .5em;
+    padding: .5em;
+    background-color: rgba(144, 238, 144, 0.418);
+    border: 1px solid rgb(51, 196, 51);
+    color: rgb(27, 114, 27);
+    width: 100%;
+}
+
+
+.sidebar_ctn {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 150px;
+    color: var(--clr-txt-secondary);
+
+    a {
+        text-decoration: none;
+        color: var(--clr-txt-secondary);
+    }
+}
+
+.checkout_list {
+    list-style: none;
+    padding: 0;
+
+    .checkout_item {
+        display: flex;
+        border-bottom: 1px solid grey;
+        justify-content: space-between;
+        gap: 1rem;
+
+        p {
+            width: 100%;
+        }
+
+        .name {
+            text-align: left;
+        }
+    }
+}

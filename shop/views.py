@@ -184,9 +184,7 @@ def add_product(request):
     page = 'add'
 
     if request.method == "POST":
-        print(request.FILES)
         form = UpdateProductForm(request.POST, request.FILES)  # Instantiate the form with request data
-        # print('Form: ', form)
         if form.is_valid():
             form.save()  # Save the form data to the database
             messages.success(request, f'Product was created successfully.')

@@ -3,8 +3,9 @@
 <a href="{% url  'account' %}">Back</a>
 <div class="page_ctn">
   {% if page == 'edit' %}
-  <form method="POST">
-    {% csrf_token %} {{ profile_form.as_p }}
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %} 
+    {{ profile_form.as_p }}
     <input type="submit" />
   </form>
   {% endif %} 
@@ -14,7 +15,7 @@
 
   <div class="profile_header">
     <div class="profile_avatar_ctn">
-      <img class="profile_avatar" src="{{ profile.avatar.url }}" />
+      <img class="profile_avatar" src="{{ user.profile.avatar.url }}" />
     </div>
     <h3>{{ profile.user.username|title }}</h3>
     <p>{{ profile.bio }}</p>

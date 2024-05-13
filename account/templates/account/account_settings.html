@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %} {% load static %} {% block content %}
 <h1>{{ profile.user.username }}</h1>
-<img src="{{ profile.avatar }}" />
+<img src="{{ profile.avatar.url }}" />
 <p>{{ profile.bio }}</p>
 <h2>Name:</h2>
 <p>{{ user.username }}</p>
@@ -19,7 +19,7 @@
 </div>
 <h2>About you:</h2>
 <div class="profile_avatar_ctn">
-  <img class="profile_avatar" src="/{{ profile.avatar }}" />
+  <img class="profile_avatar" src="{{ profile.avatar.url }}" />
 </div>
 <p>{{ profile.bio }}</p>
 {% endif %} {% endblock content %}

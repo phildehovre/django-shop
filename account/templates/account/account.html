@@ -1,4 +1,6 @@
 {% extends 'base/base.html' %} {% block content %} 
+{% load static %}
+<link rel="stylesheet" href="{% static 'account/css/styles.css' %}">
 <div class="account_ctn">
 {% if page == 'account' %}
   <article class="card">

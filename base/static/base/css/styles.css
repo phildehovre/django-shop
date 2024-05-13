@@ -5,6 +5,9 @@
     --clr-txt-secondary: rgb(146, 146, 146);
     --clr-cta-primary: rgb(0, 111, 155) ;
     --clr-cta-secondary: skyblue;
+
+    --box-shadow: 1px 5px 10px 2px rgba(128, 128, 128, 0.1);
+    --box-padding: 1rem 2.5rem;
     }
 
 .hamburger_trigger {
@@ -89,10 +92,41 @@
 }
 
 .default {
-    background-color: rgba(0, 128, 0, 0.158);
+    border: 2px solid skyblue;
 }
 
-/* Utility classes - heavily inspired by tailwind */
+.card {
+    border-radius: 6px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    padding: .5em;
+    flex-direction: column;
+    padding: var(--box-padding);
+}
+
+.page_ctn {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 1rem;
+    width: calc(100svw - 1.25rem);
+    padding: 0 2.5rem;
+}
+
+.user_action_link {
+    text-decoration: none;
+    color: black;
+    border-radius: 16px;
+    min-width: 1.5rem;
+    min-height: 1rem;
+}
+
+/**
+============================================== 
+Utility classes - heavily inspired by tailwind 
+============================================== 
+
+ */
 
 .flex {
     display: flex;
@@ -100,6 +134,10 @@
 
 .w-full {
     width: 100%;
+}
+
+.w-half {
+    width: 50%;
 }
 
 .justify-center {
@@ -111,10 +149,25 @@
     text-align: center;
 }
 
+.text-right {
+    text-align: end;
+}
+
+.text-left {
+    text-align: start;
+
+}
+
+
+
 .items-center {
     align-items: center;
 }
 .flex-col {
     display: flex;
     flex-direction: column;
+}
+
+.destructive {
+    color: crimson
 }

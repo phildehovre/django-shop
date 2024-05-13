@@ -19,24 +19,18 @@
     gap: 1rem;
 }
 
-.card {
-    border-radius: 6px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.151);
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-    padding: .5em;
-
+.card  {
     img {
         height: 250px;
         object-fit: cover;
     }
-
+    
     h2 {
         font-size: 1rem;
     }
-
+    
     &.product {
+        width: 350px;
         display: flex;
         justify-content: center;
     }

@@ -1,3 +1,4 @@
+
 .account_ctn {
     display: flex;
     flex-wrap: wrap;
@@ -9,4 +10,20 @@
     article {
         min-height: 100px;
     }
+}
+
+
+.profile_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: var(--box-shadow);
+    padding: var(--box-padding)
+}
+
+.profile_avatar_ctn {
+    border: 5px solid white;
+    box-shadow: var(--box-shadow);
 }

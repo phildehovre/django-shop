@@ -8,6 +8,10 @@
 
     article {
         min-height: 100px;
-        color: red;
     }
+}
+
+
+.profile_header {
+    border: 1px solid red;
 }

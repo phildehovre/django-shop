@@ -22,8 +22,8 @@
 .card  {
     img {
         height: 250px;
+        width: 100%;
         object-fit: cover;
-        /* border-radius: 16px; */
     }
     
     h2 {

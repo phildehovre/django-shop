@@ -7,7 +7,11 @@
 </ul>
 {% endif %}
 {% if add_perm == True %}
-<a href="{% url 'add_product' %}">Add new product</a>
+<div class="action_link admin">
+  <i class="fa-solid fa-unlock-keyhole"></i>
+  <a href="{% url 'add_product' %}">
+    Add new product</a>
+</div>
 {% endif %}
 <div class="products_layout">
   <div class="list_ctn">
@@ -30,7 +34,7 @@
             </button>
           </form >
             {% if edit_perm == True %}
-            <a href="{% url 'edit_product' product.id %}">Edit</a>
+            <a href="{% url 'edit_product' product.id %}" class="action_link admin">Edit</a>
           </span>
             {% endif %}
         </form>

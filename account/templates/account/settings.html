@@ -20,7 +20,7 @@
     <h3>{{ profile.user.username|title }}</h3>
     <p>{{ profile.bio }}</p>
     <small class="w-full text-right">
-      <a href="{% url 'settings' %}?q=edit" class="user_action_link">
+      <a href="{% url 'settings' %}?q=edit" class="action_link user">
         <i class="fa-solid fa-gear"></i>
       </a>
     </small>
@@ -29,7 +29,7 @@
   <h1 class="page_section_heading">Shipping options</h1>
   {% if addresses|length == 0 %}
   <p>You have not provided an address yet.</p>
-  <a href="{% url 'settings' %}?q=address" class="user_action_link w-full text-right">Add an address
+  <a href="{% url 'settings' %}?q=address" class="action_link user w-full text-right">Add an address
     <i class="fa-solid fa-plus"></i>
   </a>
   {% else %}
@@ -57,10 +57,10 @@
           {% endif %}
         </small>
         <small class="w-half text-right">
-          <a href="{% url 'settings' %}?q=address&id={{ address.id }}" class="user_action_link">
+          <a href="{% url 'settings' %}?q=address&id={{ address.id }}" class="action_link"user >
             <i class="fa-solid fa-pen"></i>
           </a>
-          <a href="{% url 'delete_address' address.id %}" class="user_action_link text-right destructive">
+          <a href="{% url 'delete_address' address.id %}" class="user_action_link user text-right destructive">
             <i class="fa-solid fa-trash"></i>
           </a>
         </small>

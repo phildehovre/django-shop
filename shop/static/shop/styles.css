@@ -23,17 +23,20 @@
     img {
         height: 250px;
         object-fit: cover;
+        /* border-radius: 16px; */
     }
     
     h2 {
         font-size: 1rem;
     }
     
-    &.product {
-        width: 350px;
-        display: flex;
-        justify-content: center;
-    }
+}
+.product {
+    width: 350px;
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    overflow: hidden;
 }
 
 
@@ -45,9 +48,9 @@
 }
 
 .ATB_btn {
-    padding: .5rem;
+    padding: var(--action_link-padding);
     background-color: rgb(233, 233, 233);
-    border-radius: 2px;
+    border-radius: var(--action_link-radius);
     outline: transparent;
     transition: 150ms all ease-in-out;
     cursor: pointer;

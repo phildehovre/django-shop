@@ -9,38 +9,42 @@
         {% endfor %}
     </ul>
 {% endif %}
-{% if page == 'login' %}
-<div class="form_ctn">
-    <form method="POST" class="form">
-        <h1>Login</h1>
+<div class="page_ctn w-full">
+
+    {% if page == 'login' %}
+    <div class="form_ctn w-full flex ">
+        <form method="POST" class="card form flex flex-col">
+            <h1>Login</h1>
         {% csrf_token %}
         <label for="username">User name: </label>
         <input name="username" type="text" placeholder="Enter your username" />
         <label for="password">Password: </label>
         <input name="password" type="password" placeholder="********" />
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" class='btn_main w-full'/>
         <span>
             <a href="{% url 'password_reset' %}">Forgot your password?</a>
             <p style="display: inline-block">Don't have an account yet?</p>
             <a href="{% url 'user_register' %}">Register</a>
             <span>
-    </form>
-        </div>
-        
-{% endif %}
-{% if page == 'register' %}
-<div class="form_ctn">
-    <form method="POST" class="form">
-            <h1>Register</h1>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" />
-            <span>
-                <p style="display: inline-block">Already signed up?</p>
-                <a href="{% url 'login_register' %}">Login</a>
-            <span>
-        </form>
+            </form>
     </div>
-{% endif %}
-
-{% endblock content %}
+        
+        {% endif %}
+        {% if page == 'register' %}
+        <div class="form_ctn w-full flex">
+            <form method="POST" class="card form flex flex-col">
+                <h1>Register</h1>
+                {% csrf_token %}
+                {{ form.as_div }}
+                <input type="submit" />
+                <span>
+                    <p style="display: inline-block">Already signed up?</p>
+                    <a href="{% url 'login_register' %}">Login</a>
+                <span>
+            </form>
+        </div>
+                {% endif %}
+</div>
+                
+                {% endblock content %}
+                

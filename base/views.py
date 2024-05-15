@@ -43,7 +43,6 @@ def user_logout(request):
 
 def user_register(request):
     page = 'register'
-    form = UserCreationForm()
 
     if request.method == "POST":
         try:
@@ -65,6 +64,8 @@ def user_register(request):
                 return redirect('shop')
         except Exception as e: 
             messages.error(request,f'An error occurred during registration: {str(e)}')
+    else:
+        form = UserCreationForm()
         
     return render(request, "base/login_register.html", {'page': page, "form": form})
 

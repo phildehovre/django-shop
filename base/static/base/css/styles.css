@@ -102,7 +102,10 @@
     padding: .5em;
     flex-direction: column;
     padding: var(--box-padding);
+
 }
+
+
 
 .page_ctn {
     display: flex;
@@ -112,6 +115,7 @@
     width: calc(100svw - 1.25rem);
     padding: 0 2.5rem;
 }
+
 
 .user_action_link {
     text-decoration: none;
@@ -144,9 +148,18 @@ Utility classes - heavily inspired by tailwind
     justify-content: center;
     text-align: center;
 }
+.justify-between {
+    justify-content: space-between;
+    text-align: center;
+}
 .justify-center {
     justify-content: space-between;
     text-align: center;
+}
+
+
+.wrap {
+    flex-wrap: wrap;
 }
 
 .text-right {
@@ -155,10 +168,7 @@ Utility classes - heavily inspired by tailwind
 
 .text-left {
     text-align: start;
-
 }
-
-
 
 .items-center {
     align-items: center;
@@ -170,4 +180,8 @@ Utility classes - heavily inspired by tailwind
 
 .destructive {
     color: crimson
+}
+
+.gap-1 {
+    gap: 2.5rem;
 }

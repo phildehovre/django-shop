@@ -73,13 +73,13 @@
       </ul>
       <form method="POST">
         {% csrf_token %}
-        <input type="search" placeholder="Search products..." name="search"/>
+        <input type="search" placeholder="Search products..." name="search" />
         <input type="submit" />
       </form>
       {% if request.user.is_authenticated %}
       <a class="hamburger_trigger" href="{% url 'account' %}">
         {% if request.user.profile.avatar %}
-        <img src="/{{ request.user.profile.avatar }}" alt="user avatar" />
+        <img src="{{ request.user.profile.avatar.url }}" alt="user avatar" />
         {% else %}
         <i class="fa-solid fa-user" size="4xl"></i>
         {% endif %}

@@ -14,10 +14,10 @@
   {% endif %}
   <div class="list_ctn">
     {% for order_item in basket %}
-    <article class="card">
+    <article class="card product">
       <a href="{% url 'product_detail' order_item.product.id %}">
         <img
-          src="/{{ order_item.product.image }}"
+          src="{{ order_item.product.image.url }}"
           alt="{{ order_item.product.name }}"
         />
         <h2>{{ order_item.product.name }}</h2>

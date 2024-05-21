@@ -4,6 +4,7 @@ cachetools==5.3.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
 distlib==0.3.8
+Django==5.0.6
 django-summernote==0.8.20.0
 filelock==3.13.4
 fontawesomefree==6.5.1

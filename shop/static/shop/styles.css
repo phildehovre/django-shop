@@ -39,8 +39,6 @@
     overflow: hidden;
 }
 
-
-
 .basket_ctn {
     width: 100%;
     flex-direction: row;
@@ -120,4 +118,15 @@
             text-align: left;
         }
     }
+}
+
+.product_detail_ctn {
+    margin: 0 auto;
+}
+
+.product_detail-img {
+    margin-bottom: 10px;
+}
+
+.product_detail-carousel {
 }

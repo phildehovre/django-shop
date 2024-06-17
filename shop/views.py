@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, OrderItem, ProductTag, Order
+from .models import Product, OrderItem, ProductTag, Order, ProductImage
 from base.models import Address
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -63,11 +63,15 @@ def add_to_basket(request, product):
 def product_detail(request, pk):    
     queryset = Product.objects.all()
     product = get_object_or_404(queryset, id=pk)
+    images = ProductImage.objects.filter(product=pk)
 
     if request.method == "POST":
         add_to_basket(request, product)
          
-    return render(request, 'shop/product_detail.html', {"product": product})
+    return render(request, 'shop/product_detail.html', {
+         "product": product,
+         'images': images     
+    })
 
 @login_required
 def update_basket(request):

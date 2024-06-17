@@ -1,7 +1,27 @@
 {% extends 'shop/base.html' %} {% block products %} {% if product %}
 <div class="product_detail_ctn">
+
   <h2>{{ product.name }}</h2>
-  <img src="/{{ product.image }}" alt="Image of {{ product.name }}"/>
+  <!-- <div class="product_detail-img">
+  </div> -->
+  <div class="product_detail_carousel glide">
+    <div class="glide__track" data-glide-el="track">
+      <ul class="glide__slides">
+        <li class="glide__slide">
+          <img src="{{ product.image.url }}" alt="Image of {{ product.name }}"/>
+          </li>
+          {% for image in images %}
+          <li class="glide__slide">
+                <img src="{{ image.image.url }}" alt="Image of {{ product.name }}"/>
+              </li>
+              {% endfor %}
+          </ul>
+          <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+          </div>
+    </div>
+  </div>
   <p>{{ product.description }}</p>
   <form method="POST">
     {% csrf_token %}
@@ -20,3 +40,19 @@
 {% endif %}
 </div>
 {% endif %} {% endblock products %}
+
+
+{% block script %}
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var glide = new Glide('.glide', {
+                // Add your configuration options here
+                type: 'carousel',
+                perView: 1,
+                autoplay: 5000,
+                // Add more options as needed
+            });
+            glide.mount();
+        });
+</script>
+{% endblock %}
